@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budgetly | Budgets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/budgets.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="logo"><span>⟡</span>Budgetly</div>
+      <div class="nav">
+        <div class="nav-label">Overview</div>
+        <a class="nav-link" data-page="dashboard" href="dashboard.html">🏠 Dashboard</a>
+        <a class="nav-link" data-page="budgets" href="budgets.html">💳 Budgets</a>
+        <a class="nav-link" data-page="expenses" href="expenses.html">🧾 Expenses</a>
+      </div>
+      <div class="sidebar-footer">
+        <div class="user-avatar">B</div>
+        <div class="user-meta">
+          <span class="user-name">Budgetly User</span>
+          <span class="user-email">user@example.com</span>
+        </div>
+        <button class="logout-btn" id="logoutBtn">⇠</button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <div class="top-bar">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button class="menu-toggle">☰</button>
+          <div>
+            <h1 class="page-title">Budgets</h1>
+            <p class="muted">Create, track, and manage your budget categories.</p>
+          </div>
+        </div>
+        <div class="pill">Plan your month</div>
+      </div>
+
+      <div class="budget-actions">
+        <button class="button" id="openBudgetModal">+ Add Budget</button>
+        <button class="button secondary" id="openExpenseModal">+ Quick Expense</button>
+      </div>
+
+      <div class="grid budget-grid" id="budgetList"></div>
+
+      <div class="modal" id="budgetModal">
+        <div class="modal-card">
+          <div class="modal-header">
+            <h3>New Budget</h3>
+            <button class="close-modal" data-close="#budgetModal">✕</button>
+          </div>
+          <form id="budgetForm">
+            <div class="input-group">
+              <label for="budgetTitle">Budget name</label>
+              <input type="text" id="budgetTitle" required placeholder="Housing, Groceries, etc.">
+            </div>
+            <div class="input-group">
+              <label for="budgetLimit">Monthly limit</label>
+              <input type="number" id="budgetLimit" min="0" step="10" required placeholder="500">
+            </div>
+            <div class="input-group">
+              <label for="budgetIcon">Icon</label>
+              <select id="budgetIcon">
+                <option>💳</option>
+                <option>🏠</option>
+                <option>🛒</option>
+                <option>🚗</option>
+                <option>🍽️</option>
+                <option>🎟️</option>
+                <option>🎁</option>
+              </select>
+            </div>
+            <button type="submit" class="button">Create Budget</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="modal" id="expenseModal">
+        <div class="modal-card">
+          <div class="modal-header">
+            <h3>Add Expense</h3>
+            <button class="close-modal" data-close="#expenseModal">✕</button>
+          </div>
+          <form id="expenseForm">
+            <div class="input-group">
+              <label for="expenseBudget">Budget</label>
+              <select id="expenseBudget" required></select>
+            </div>
+            <div class="input-group">
+              <label for="expenseName">Expense name</label>
+              <input type="text" id="expenseName" required placeholder="Groceries, Fuel...">
+            </div>
+            <div class="input-group">
+              <label for="expenseAmount">Amount</label>
+              <input type="number" id="expenseAmount" min="0" step="1" required>
+            </div>
+            <div class="input-group">
+              <label for="expenseDate">Date</label>
+              <input type="date" id="expenseDate" required>
+            </div>
+            <button type="submit" class="button">Add Expense</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/budgets.js"></script>
+</body>
+</html>

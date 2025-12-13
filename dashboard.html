@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budgetly | Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="logo"><span>⟡</span>Budgetly</div>
+      <div class="nav">
+        <div class="nav-label">Overview</div>
+        <a class="nav-link" data-page="dashboard" href="dashboard.html">🏠 Dashboard</a>
+        <a class="nav-link" data-page="budgets" href="budgets.html">💳 Budgets</a>
+        <a class="nav-link" data-page="expenses" href="expenses.html">🧾 Expenses</a>
+      </div>
+      <div class="sidebar-footer">
+        <div class="user-avatar">B</div>
+        <div class="user-meta">
+          <span class="user-name">Budgetly User</span>
+          <span class="user-email">user@example.com</span>
+        </div>
+        <button class="logout-btn" id="logoutBtn">⇠</button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <div class="top-bar">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button class="menu-toggle">☰</button>
+          <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="muted">Monitor all budgets and expenses at a glance.</p>
+          </div>
+        </div>
+        <div class="pill">Local session active</div>
+      </div>
+
+      <div class="overview-grid">
+        <div class="card stat-card">
+          <span class="label">Total Budget</span>
+          <div class="stat-value" id="totalBudget">$0</div>
+          <span class="muted">Sum of all limits</span>
+        </div>
+        <div class="card stat-card">
+          <span class="label">Total Expenses</span>
+          <div class="stat-value" id="totalExpenses">$0</div>
+          <span class="muted">All spending</span>
+        </div>
+        <div class="card stat-card">
+          <span class="label">Budgets</span>
+          <div class="stat-value" id="budgetCount">0</div>
+          <span class="muted">Active categories</span>
+        </div>
+        <div class="card stat-card">
+          <span class="label">Expenses</span>
+          <div class="stat-value" id="expenseCount">0</div>
+          <span class="muted">Logged items</span>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <h3>Budget Activity</h3>
+            <a href="budgets.html" class="chip">Manage</a>
+          </div>
+          <div class="bar-chart" id="budgetActivity"></div>
+        </div>
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <h3>Health</h3>
+            <span class="muted">Spending pace</span>
+          </div>
+          <div class="surface">
+            <strong id="healthStatus">Balanced</strong>
+            <p class="muted" id="healthCopy">Stay under the limits to keep your budgets healthy.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="lists">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Latest Budgets</h3>
+            <a href="budgets.html" class="button secondary" style="padding:8px 12px;">Add Budget</a>
+          </div>
+          <div id="latestBudgets"></div>
+        </div>
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Recent Expenses</h3>
+            <a href="expenses.html" class="button secondary" style="padding:8px 12px;">View All</a>
+          </div>
+          <div id="latestExpenses"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
