@@ -18,7 +18,6 @@ $(function () {
   renderActivity(data.budgets);
   renderLatestBudgets(data.budgets);
   renderLatestExpenses(data.budgets);
-  renderHealth(totals);
 });
 
 function renderActivity(budgets) {
@@ -105,19 +104,4 @@ function renderLatestExpenses(budgets) {
     `);
     list.append(item);
   });
-}
-
-function renderHealth(totals) {
-  const ratio = totals.totalBudget ? totals.totalExpenses / totals.totalBudget : 0;
-  let status = 'Balanced';
-  let copy = 'Keep logging expenses to maintain visibility.';
-  if (ratio > 0.9) {
-    status = 'Over budget risk';
-    copy = 'Slow down spending or raise your limits.';
-  } else if (ratio > 0.7) {
-    status = 'Monitor closely';
-    copy = 'You are approaching your monthly limit.';
-  }
-  $('#healthStatus').text(status);
-  $('#healthCopy').text(copy);
 }

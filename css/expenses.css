@@ -4,7 +4,7 @@
   justify-content: space-between;
   gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .filter-group {
@@ -12,6 +12,11 @@
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.filter-group label {
+  margin: 0;
+  color: var(--muted);
 }
 
 .table .budget {
@@ -29,10 +34,16 @@
 }
 
 .table button {
-  border: none;
-  background: #fee2e2;
-  color: #b91c1c;
-  padding: 8px 10px;
+  border: 1px solid #fcdada;
+  background: #fff5f5;
+  color: #c81e1e;
+  padding: 8px 12px;
   border-radius: 10px;
   cursor: pointer;
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+
+.table button:hover {
+  background: #ffe3e3;
+  transform: translateY(-1px);
 }
