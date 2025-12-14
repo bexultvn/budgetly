@@ -8,8 +8,23 @@
 .activity-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
+  grid-template-areas:
+    'activity budgets'
+    'expenses budgets';
   gap: 14px;
   align-items: start;
+}
+
+.activity-card {
+  grid-area: activity;
+}
+
+.latest-budgets-card {
+  grid-area: budgets;
+}
+
+.expenses-card {
+  grid-area: expenses;
 }
 
 .stat-card {
@@ -44,65 +59,11 @@
 }
 
 .bar-chart {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 14px;
-}
-
-.bar {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.bar-stack {
-  position: relative;
-  height: 150px;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  overflow: visible;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.bar-limit,
-.bar-spent {
-  width: 62%;
-  border-radius: 10px;
-  transition: height 0.45s ease;
-}
-
-.bar-limit {
-  background: #dfe4ff;
-  height: 0;
-}
-
-.bar-spent {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(120deg, #5560ff, #6f7dff);
-  box-shadow: 0 12px 24px rgba(85, 96, 255, 0.18);
-  height: 0;
-}
-
-.bar-label {
-  text-align: center;
-  font-weight: 700;
-  color: #111827;
-  font-size: 14px;
-}
-
-.bar-subtext {
-  text-align: center;
-  color: var(--muted);
-  font-size: 12px;
+  display: block;
 }
 
 .bar-legend {
-  grid-column: 1 / -1;
+  margin-top: 10px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -123,7 +84,150 @@
 }
 
 .legend-dot.spent {
-  background: linear-gradient(120deg, #5560ff, #6f7dff);
+  background: linear-gradient(120deg, #2563eb, #3b82f6);
+}
+
+.empty-tall {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.histogram {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 12px;
+  align-items: end;
+  min-height: 260px;
+}
+
+.histogram-y {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  min-height: 220px;
+}
+
+.histogram-plot {
+  position: relative;
+  min-height: 260px;
+  overflow: visible;
+}
+
+.histogram-grid {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.histogram-grid span {
+  border-top: 1px solid #e5e7eb;
+  height: 1px;
+  width: 100%;
+}
+
+.histogram-bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 22px;
+  padding: 0 10px 4px;
+}
+
+.bar-group {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 10px;
+  flex: 1;
+  min-width: 70px;
+  text-align: center;
+}
+
+.bar-stack {
+  position: relative;
+  height: 220px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.bar-col {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 8px 8px 4px 4px;
+  transition: height 0.45s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.bar-col.spent {
+  width: 68%;
+  background: linear-gradient(180deg, #2563eb, #1d4ed8);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
+  z-index: 2;
+}
+
+.bar-col.limit {
+  width: 68%;
+  background: #e5ebff;
+  border: 1px solid #d0dbff;
+  z-index: 1;
+}
+
+.bar-col:hover {
+  transform: translateX(-50%);
+}
+
+.bar-stack:hover .bar-col {
+  transform: translateX(-50%) translateY(-6px) scale(1.03);
+}
+
+.bar-col::before,
+.bar-col::after {
+  pointer-events: none;
+}
+
+.bar-col[data-tip]:hover::before {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid var(--border);
+  color: #0f172a;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  white-space: nowrap;
+  box-shadow: var(--shadow-soft);
+  z-index: 5;
+}
+
+.bar-col[data-tip]:hover::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #fff;
+  filter: drop-shadow(0 -1px 0 var(--border));
+}
+
+.bar-label {
+  text-align: center;
+  font-weight: 700;
+  color: #111827;
+  font-size: 13px;
 }
 
 .delete-expense {
@@ -144,14 +248,19 @@
 @media (max-width: 960px) {
   .activity-grid {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      'activity'
+      'budgets'
+      'expenses';
   }
 }
 
 .lists {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: 2fr 1fr;
   gap: 14px;
   margin-top: 18px;
+  align-items: start;
 }
 
 .latest-budget-card {
@@ -198,6 +307,12 @@
 
 .list-item:last-child {
   border-bottom: none;
+}
+
+@media (max-width: 960px) {
+  .lists {
+    grid-template-columns: 1fr;
+  }
 }
 
 .icon-circle {

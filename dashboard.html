@@ -12,23 +12,7 @@
 </head>
 <body>
   <div class="app-shell">
-    <aside class="sidebar">
-      <div class="logo"><span>⟡</span>Budgetly</div>
-      <div class="nav">
-        <div class="nav-label">Overview</div>
-        <a class="nav-link" data-page="dashboard" href="dashboard.html">🏠 Dashboard</a>
-        <a class="nav-link" data-page="budgets" href="budgets.html">💳 Budgets</a>
-        <a class="nav-link" data-page="expenses" href="expenses.html">🧾 Expenses</a>
-      </div>
-      <div class="sidebar-footer">
-        <div class="user-avatar">B</div>
-        <div class="user-meta">
-          <span class="user-name">Budgetly User</span>
-          <span class="user-email">user@example.com</span>
-        </div>
-        <button class="logout-btn" id="logoutBtn">⇠</button>
-      </div>
-    </aside>
+    <aside class="sidebar"></aside>
 
     <main class="main-area">
       <div class="top-bar">
@@ -45,21 +29,21 @@
         <div class="card stat-card">
           <div class="stat-top">
             <span class="label">Total Budget</span>
-            <span class="stat-icon">🐷</span>
+            <span class="stat-icon">💰</span>
           </div>
           <div class="stat-value" id="totalBudget">$0</div>
         </div>
         <div class="card stat-card">
           <div class="stat-top">
             <span class="label">Total Expenses</span>
-            <span class="stat-icon">🧾</span>
+            <span class="stat-icon">💰</span>
           </div>
           <div class="stat-value" id="totalExpenses">$0</div>
         </div>
         <div class="card stat-card">
           <div class="stat-top">
             <span class="label">Budgets</span>
-            <span class="stat-icon">📂</span>
+            <span class="stat-icon">💵</span>
           </div>
           <div class="stat-value" id="budgetCount">0</div>
         </div>
@@ -73,25 +57,21 @@
       </div>
 
       <div class="activity-grid">
-        <div class="card">
+        <div class="card activity-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <h3>Budget Activity</h3>
           </div>
           <div class="bar-chart" id="budgetActivity"></div>
         </div>
-        <div class="card">
+        <div class="card latest-budgets-card">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <h3>Latest Budgets</h3>
           </div>
           <div id="latestBudgets"></div>
         </div>
-      </div>
-
-      <div class="lists">
-        <div class="card">
+        <div class="card expenses-card">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <h3>Recent Expenses</h3>
-            <a href="expenses.html" class="button secondary" style="padding:8px 12px;">View All</a>
           </div>
           <table class="table" id="latestExpensesTable">
             <thead>
@@ -105,7 +85,7 @@
             </thead>
             <tbody id="latestExpensesBody"></tbody>
           </table>
-          <div class="empty-state hidden" id="latestExpensesEmpty">No expenses yet. Add one to see it here.</div>
+          <div class="empty-state hidden" id="latestExpensesEmpty">No expenses</div>
         </div>
       </div>
     </main>

@@ -1,5 +1,6 @@
 $(function () {
   requireAuth();
+  renderSidebar('dashboard');
   setActiveNav('dashboard');
   initSidebarToggle();
   refreshDashboard();
@@ -37,45 +38,84 @@ function renderActivity(budgets) {
   const container = $('#budgetActivity');
   container.empty();
   if (!budgets.length) {
-    container.append('<div class="empty-state">Create your first budget to see activity.</div>');
+    container.append('<div class="empty-state">No Budgets</div>');
     return;
   }
 
-  const maxValue =
+  const { ticks, topTick } = buildNiceTicks(budgets);
+  const formatTick = (val) => {
+    if (val >= 1000) {
+      const rounded = Math.round((val / 1000) * 10) / 10;
+      return `${rounded % 1 === 0 ? rounded.toFixed(0) : rounded}k`;
+    }
+    return Math.round(val).toString();
+  };
+
+  const bars = budgets
+    .map((budget) => {
+      const stats = getBudgetStats(budget);
+      const limit = Number(budget.limit) || 0;
+      const spent = stats.spent;
+      const limitHeight = Math.min((limit / topTick) * 100, 100);
+      const spentHeight = Math.min((spent / topTick) * 100, 100);
+      const tooltip = `${budget.title}\nSpent: ${formatCurrency(spent)}\nLimit: ${formatCurrency(limit)}`;
+      return `
+        <div class="bar-group">
+          <div class="bar-stack">
+            <div class="bar-col spent" style="height:${spentHeight}%;" data-tip="${tooltip.replace(/\n/g, ' · ')}"></div>
+            <div class="bar-col limit" style="height:${limitHeight}%;" data-tip="${tooltip.replace(/\n/g, ' · ')}"></div>
+          </div>
+          <div class="bar-label">${budget.title}</div>
+        </div>
+      `;
+    })
+    .join('');
+
+  container.append(`
+    <div class="histogram">
+      <div class="histogram-y">
+        ${ticks
+          .slice()
+          .reverse()
+          .map((tick) => `<span>${formatTick(tick)}</span>`)
+          .join('')}
+      </div>
+      <div class="histogram-plot">
+        <div class="histogram-grid">
+          ${ticks.map(() => '<span></span>').join('')}
+        </div>
+        <div class="histogram-bars">
+          ${bars}
+        </div>
+      </div>
+    </div>
+    <div class="bar-legend">
+      <span class="legend-dot spent"></span> totalSpend
+      <span class="legend-dot limit"></span> amount
+    </div>
+  `);
+}
+
+function buildNiceTicks(budgets, tickCount = 5) {
+  const rawMax =
     budgets.reduce((max, b) => {
       const stats = getBudgetStats(b);
       return Math.max(max, Number(b.limit) || 0, stats.spent);
     }, 0) || 1;
 
-  container.append(`
-    <div class="bar-legend">
-      <span class="legend-dot spent"></span> Total Spend
-      <span class="legend-dot limit"></span> Budget Limit
-    </div>
-  `);
-
-  budgets.forEach((budget) => {
-    const stats = getBudgetStats(budget);
-    const limitHeight = Math.max((Number(budget.limit) / maxValue) * 100, 4);
-    const spentHeight = Math.min((stats.spent / maxValue) * 100, 100);
-
-    const bar = $(`
-      <div class="bar">
-        <div class="bar-stack" title="${budget.title}">
-          <div class="bar-limit" style="height:0%" title="Limit: ${formatCurrency(budget.limit)}"></div>
-          <div class="bar-spent" style="height:0%" title="Spent: ${formatCurrency(stats.spent)}"></div>
-        </div>
-        <div class="bar-label">${budget.title}</div>
-        <div class="bar-subtext">${formatCurrency(stats.spent)} of ${formatCurrency(budget.limit)}</div>
-      </div>
-    `);
-
-    container.append(bar);
-    setTimeout(() => {
-      bar.find('.bar-limit').css('height', `${limitHeight}%`);
-      bar.find('.bar-spent').css('height', `${spentHeight}%`);
-    }, 40);
-  });
+  const roughStep = rawMax / (tickCount - 1);
+  const pow = 10 ** Math.floor(Math.log10(roughStep || 1));
+  const d = roughStep / pow;
+  let nice;
+  if (d <= 1) nice = 1;
+  else if (d <= 2) nice = 2;
+  else if (d <= 2.5) nice = 2.5;
+  else if (d <= 5) nice = 5;
+  else nice = 10;
+  const step = nice * pow;
+  const topTick = step * (tickCount - 1);
+  const ticks = Array.from({ length: tickCount }, (_, i) => i * step);
+  return { ticks, topTick };
 }
 
 function renderLatestBudgets(budgets) {
@@ -83,7 +123,7 @@ function renderLatestBudgets(budgets) {
   list.empty();
   const latest = getLatestBudgets(budgets, 4);
   if (!latest.length) {
-    list.append('<div class="empty-state">No budgets yet. Add one to start tracking.</div>');
+    list.append('<div class="empty-state empty-tall">No Budgets</div>');
     return;
   }
 

@@ -118,9 +118,9 @@
 }
 
 .toggle-row button.active {
-  background: linear-gradient(120deg, #5560ff, #6f7dff);
+  background: linear-gradient(120deg, #2563eb, #3b82f6);
   color: #fff;
-  box-shadow: 0 10px 24px rgba(85, 96, 255, 0.16);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.16);
 }
 
 .input-group {

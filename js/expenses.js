@@ -1,6 +1,7 @@
 $(function () {
   requireAuth();
   const data = getData();
+  renderSidebar('expenses');
   renderUserBadge(data.user);
   setActiveNav('expenses');
   initSidebarToggle();

@@ -3,6 +3,7 @@ let selectedBudgetId = null;
 $(function () {
   requireAuth();
   const data = getData();
+  renderSidebar('budgets');
   renderUserBadge(data.user);
   setActiveNav('budgets');
   initSidebarToggle();
