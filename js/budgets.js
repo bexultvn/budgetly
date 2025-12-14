@@ -21,7 +21,6 @@ function bindEvents() {
     resetBudgetForm();
     openModal('#budgetModal');
   });
-  $('#openExpenseModal').on('click', () => openExpenseModal());
 
   $('.close-modal').on('click', function () {
     const target = $(this).data('close');
@@ -142,12 +141,23 @@ function renderBudgetOptions(budgets) {
 function renderBudgetCards(budgets) {
   const container = $('#budgetList');
   container.empty();
-  if (!budgets.length) {
-    $('#emptyBudgetsState').removeClass('hidden');
-    return;
-  }
-
   $('#emptyBudgetsState').addClass('hidden');
+
+  const createCard = $(`
+    <div class="card budget-card create-budget-card">
+      <div class="create-inner">
+        <div class="create-icon">+</div>
+        <div class="create-text">
+          <div class="create-line">Create New Budget</div>
+        </div>
+      </div>
+    </div>
+  `);
+  createCard.on('click', () => {
+    resetBudgetForm();
+    openModal('#budgetModal');
+  });
+  container.append(createCard);
 
   budgets.forEach((budget) => {
     const stats = getBudgetStats(budget);
@@ -182,6 +192,11 @@ function renderBudgetCards(budgets) {
   });
 
   $('.budget-card').off('click').on('click', function () {
+    if ($(this).hasClass('create-budget-card')) {
+      resetBudgetForm();
+      openModal('#budgetModal');
+      return;
+    }
     const id = $(this).data('id');
     selectedBudgetId = id;
     renderBudgetCards(budgets);
@@ -255,7 +270,9 @@ function renderBudgetDetail(budget) {
 function toggleBudgetStates(count) {
   if (!count) {
     $('#budgetDetailShell').addClass('hidden');
-    $('#emptyBudgetsState').removeClass('hidden');
+    $('#budgetList').removeClass('hidden');
+    $('#budgetActions').removeClass('hidden');
+    $('#emptyBudgetsState').addClass('hidden');
   } else {
     $('#emptyBudgetsState').addClass('hidden');
     if (!selectedBudgetId) {

@@ -92,7 +92,7 @@ function renderSidebar(activePage = '') {
   $sidebar.html(`
     <div class="logo-stack">
       <div class="logo-mark">B</div>
-      <div class="logo-word">
+      <div class="logo-word"> 
         <span class="logo-name">Budgetly</span>
       </div>
     </div>

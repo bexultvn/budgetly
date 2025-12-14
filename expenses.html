@@ -26,12 +26,11 @@
 
       <div class="expense-toolbar">
         <div class="filter-group">
-          <label for="filterBudget" class="muted">Filter</label>
           <select id="filterBudget">
             <option value="all">All budgets</option>
           </select>
         </div>
-        <button class="button" id="openExpenseModal">+ Add Expense</button>
+        <button class="button" id="openExpenseModal">+</button>
       </div>
 
       <div class="card">
@@ -47,7 +46,7 @@
           </thead>
           <tbody></tbody>
         </table>
-        <div class="empty-state hidden" id="emptyExpenses">No expenses logged yet. Add your first one!</div>
+        <div class="empty-state hidden" id="emptyExpenses">No expenses</div>
       </div>
 
       <div class="modal" id="expenseModal">
