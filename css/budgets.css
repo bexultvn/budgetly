@@ -6,17 +6,55 @@
   margin-bottom: 16px;
 }
 
+.button.ghost {
+  background: transparent;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.small {
+  font-size: 12px;
+}
+
 .budget-card {
   display: flex;
   flex-direction: column;
   gap: 14px;
   transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
 }
 
 .budget-card:hover {
   box-shadow: var(--shadow-soft);
   border-color: #dfe4ff;
   transform: translateY(-2px);
+}
+
+.budget-card.selected {
+  border: 1px solid #dfe4ff;
+  box-shadow: 0 12px 32px rgba(91, 97, 255, 0.16);
+}
+
+.budget-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.budget-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  color: #111827;
+}
+
+.budget-limit {
+  font-weight: 800;
+  color: var(--primary);
 }
 
 .budget-head {
@@ -77,4 +115,70 @@
   border-radius: 12px;
   color: var(--muted);
   border: 1px dashed var(--border);
+}
+
+.budget-detail-shell {
+  display: grid;
+  grid-template-columns: minmax(360px, 1.2fr) minmax(260px, 0.8fr);
+  gap: 16px;
+  margin-top: 18px;
+  scroll-margin-top: 20px;
+}
+
+.budget-detail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.budget-detail-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.budget-detail-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.detail-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 12px 0 8px;
+}
+
+.detail-expenses {
+  margin-top: 12px;
+}
+
+.detail-expenses-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.table-shell {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.budget-form-card form {
+  margin-top: 10px;
+}
+
+.budget-meta span {
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .budget-detail-shell {
+    grid-template-columns: 1fr;
+  }
 }

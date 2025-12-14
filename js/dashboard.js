@@ -4,6 +4,12 @@ $(function () {
   setActiveNav('dashboard');
   initSidebarToggle();
 
+  if (data.user && data.user.name) {
+    $('#welcomeCopy').text(`Welcome, ${data.user.name}. Manage your money with confidence.`);
+  } else {
+    $('#welcomeCopy').text('Welcome, manage your money with confidence.');
+  }
+
   $('#logoutBtn').on('click', () => {
     logoutUser();
     window.location.href = 'index.html';
@@ -28,26 +34,39 @@ function renderActivity(budgets) {
     return;
   }
 
+  const maxValue =
+    budgets.reduce((max, b) => {
+      const stats = getBudgetStats(b);
+      return Math.max(max, Number(b.limit) || 0, stats.spent);
+    }, 0) || 1;
+
+  container.append(`
+    <div class="bar-legend">
+      <span class="legend-dot spent"></span> Total Spend
+      <span class="legend-dot limit"></span> Budget Limit
+    </div>
+  `);
+
   budgets.forEach((budget) => {
     const stats = getBudgetStats(budget);
+    const limitHeight = Math.max((Number(budget.limit) / maxValue) * 100, 4);
+    const spentHeight = Math.min((stats.spent / maxValue) * 100, 100);
+
     const bar = $(`
       <div class="bar">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div class="budget-title"><span class="icon-circle">${budget.icon}</span> ${budget.title}</div>
-          <span class="pill ${stats.percent > 90 ? 'warn' : 'success'}">${Math.round(stats.percent)}%</span>
+        <div class="bar-stack" title="${budget.title}">
+          <div class="bar-limit" style="height:0%" title="Limit: ${formatCurrency(budget.limit)}"></div>
+          <div class="bar-spent" style="height:0%" title="Spent: ${formatCurrency(stats.spent)}"></div>
         </div>
-        <div class="bar-track">
-          <div class="bar-fill" style="height:0%"></div>
-        </div>
-        <div style="display:flex; justify-content:space-between;">
-          <small class="muted">${formatCurrency(stats.spent)} spent</small>
-          <small class="muted">${formatCurrency(stats.remaining)} left</small>
-        </div>
+        <div class="bar-label">${budget.title}</div>
+        <div class="bar-subtext">${formatCurrency(stats.spent)} of ${formatCurrency(budget.limit)}</div>
       </div>
     `);
+
     container.append(bar);
     setTimeout(() => {
-      bar.find('.bar-fill').css('height', `${stats.percent}%`);
+      bar.find('.bar-limit').css('height', `${limitHeight}%`);
+      bar.find('.bar-spent').css('height', `${spentHeight}%`);
     }, 40);
   });
 }

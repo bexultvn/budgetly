@@ -82,11 +82,7 @@ a {
 }
 
 .nav-label {
-  color: #9ca3af;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
+  display: none;
 }
 
 .nav-link {

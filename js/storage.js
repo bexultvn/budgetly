@@ -87,6 +87,17 @@ function deleteBudget(budgetId) {
   saveData(data);
 }
 
+function updateBudget(budgetId, updates) {
+  const data = getData();
+  const target = data.budgets.find((b) => b.id === budgetId);
+  if (!target) return null;
+  target.title = updates.title ?? target.title;
+  target.limit = updates.limit !== undefined ? Number(updates.limit) : target.limit;
+  target.icon = updates.icon ?? target.icon;
+  saveData(data);
+  return target;
+}
+
 function addExpense(budgetId, expense) {
   const data = getData();
   const target = data.budgets.find((b) => b.id === budgetId);

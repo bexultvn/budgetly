@@ -36,18 +36,95 @@
           <button class="menu-toggle">☰</button>
           <div>
             <h1 class="page-title">Budgets</h1>
-            <p class="muted">Create, track, and manage your budget categories.</p>
           </div>
         </div>
-        <div class="pill">Plan your month</div>
       </div>
 
-      <div class="budget-actions">
+      <div class="budget-actions" id="budgetActions">
         <button class="button" id="openBudgetModal">+ Add Budget</button>
         <button class="button secondary" id="openExpenseModal">+ Quick Expense</button>
       </div>
 
+      <button class="button ghost hidden" id="backToBudgets" style="margin-bottom:10px;">← Back to all budgets</button>
+
       <div class="grid budget-grid" id="budgetList"></div>
+
+      <div id="budgetDetailShell" class="budget-detail-shell hidden">
+        <div class="card budget-detail" id="budgetDetailCard">
+          <div class="budget-detail-head">
+            <div class="budget-detail-title">
+              <div class="icon-circle primary" id="detailIcon">💳</div>
+              <div>
+                <h3 id="detailTitle" style="margin:0;">Selected Budget</h3>
+                <p class="muted" id="detailMeta"></p>
+              </div>
+            </div>
+            <div class="budget-detail-actions">
+              <button class="button secondary" id="editBudgetBtn">Edit</button>
+              <button class="button danger" id="deleteBudgetBtn">Delete</button>
+            </div>
+          </div>
+
+          <div class="detail-stats">
+            <div>
+              <span class="muted small">Limit</span>
+              <div class="stat-value" id="detailLimit">$0</div>
+            </div>
+            <div>
+              <span class="muted small">Spent</span>
+              <div class="stat-value" id="detailSpent">$0</div>
+            </div>
+            <div>
+              <span class="muted small">Remaining</span>
+              <div class="stat-value" id="detailRemaining">$0</div>
+            </div>
+          </div>
+
+          <div class="progress" id="detailProgress"><span></span></div>
+
+          <div class="detail-expenses">
+            <div class="detail-expenses-head">
+              <h4 style="margin:0;">Expenses</h4>
+              <span class="muted" id="detailExpensesCount">0 items</span>
+            </div>
+            <div class="table-shell">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="detailExpenseRows"></tbody>
+              </table>
+              <div class="empty-state hidden" id="detailEmptyState">No expenses yet. Add one on the right.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card budget-form-card">
+          <h3 style="margin-top:0;">Add Expense</h3>
+          <form id="inlineExpenseForm">
+            <div class="input-group">
+              <label for="inlineExpenseName">Expense name</label>
+              <input type="text" id="inlineExpenseName" required placeholder="e.g. Bedroom Decor">
+            </div>
+            <div class="input-group">
+              <label for="inlineExpenseAmount">Amount</label>
+              <input type="number" id="inlineExpenseAmount" min="0" step="1" required placeholder="e.g. 120">
+            </div>
+            <div class="input-group">
+              <label for="inlineExpenseDate">Date</label>
+              <input type="date" id="inlineExpenseDate" required>
+            </div>
+            <button type="submit" class="button">Add New Expense</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="emptyBudgetsState" class="empty-state hidden">Create your first budget to get started.</div>
 
       <div class="modal" id="budgetModal">
         <div class="modal-card">
