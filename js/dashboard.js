@@ -1,19 +1,26 @@
 $(function () {
-  const data = requireAuth();
-  renderUserBadge(data.user);
+  requireAuth();
   setActiveNav('dashboard');
   initSidebarToggle();
-
-  if (data.user && data.user.name) {
-    $('#welcomeCopy').text(`Welcome, ${data.user.name}. Manage your money with confidence.`);
-  } else {
-    $('#welcomeCopy').text('Welcome, manage your money with confidence.');
-  }
+  refreshDashboard();
 
   $('#logoutBtn').on('click', () => {
     logoutUser();
     window.location.href = 'index.html';
   });
+});
+
+function refreshDashboard() {
+  const data = getData();
+  renderUserBadge(data.user);
+
+  if (data.user && data.user.name) {
+    $('#welcomeTitle').text(`Hi, ${data.user.name} ✌️`);
+    $('#welcomeCopy').text(`Here's what's happening with your money, let's manage your expense.`);
+  } else {
+    $('#welcomeTitle').text('Hi there ✌️');
+    $('#welcomeCopy').text("Here's what's happening with your money, let's manage your expense.");
+  }
 
   const totals = calculateTotals(data);
   $('#totalBudget').text(formatCurrency(totals.totalBudget));
@@ -24,7 +31,7 @@ $(function () {
   renderActivity(data.budgets);
   renderLatestBudgets(data.budgets);
   renderLatestExpenses(data.budgets);
-});
+}
 
 function renderActivity(budgets) {
   const container = $('#budgetActivity');
@@ -103,24 +110,36 @@ function renderLatestBudgets(budgets) {
 }
 
 function renderLatestExpenses(budgets) {
-  const list = $('#latestExpenses');
-  list.empty();
-  const recent = getLatestExpenses(budgets, 5);
+  const $tbody = $('#latestExpensesBody');
+  const $empty = $('#latestExpensesEmpty');
+  $tbody.empty();
+  const recent = getAllExpenses()
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 5);
   if (!recent.length) {
-    list.append('<div class="empty-state">No expenses yet. Log a purchase to see it here.</div>');
+    $empty.removeClass('hidden');
     return;
   }
+  $empty.addClass('hidden');
+
   recent.forEach((expense) => {
-    const item = $(`
-      <div class="list-item">
-        <div class="icon-circle">${expense.icon || '💳'}</div>
-        <div style="flex:1;">
-          <strong>${expense.name}</strong>
-          <div class="muted">${expense.budgetTitle} • ${formatDate(expense.date)}</div>
-        </div>
-        <span class="stat-value" style="font-size:18px;">${formatCurrency(expense.amount)}</span>
-      </div>
+    const row = $(`
+      <tr>
+        <td>${expense.name}</td>
+        <td><span class="budget">${expense.icon || '💳'} ${expense.budgetTitle || ''}</span></td>
+        <td class="amount">${formatCurrency(expense.amount)}</td>
+        <td class="date">${formatDate(expense.date)}</td>
+        <td style="text-align:right;"><button class="delete-expense" data-id="${expense.id}">Delete</button></td>
+      </tr>
     `);
-    list.append(item);
+    $tbody.append(row);
   });
+
+  $('.delete-expense')
+    .off('click')
+    .on('click', function () {
+      const id = $(this).data('id');
+      deleteExpense(id);
+      refreshDashboard();
+    });
 }

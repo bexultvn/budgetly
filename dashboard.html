@@ -35,53 +35,77 @@
         <div style="display:flex; align-items:center; gap:10px;">
           <button class="menu-toggle">☰</button>
           <div>
-            <h1 class="page-title">Dashboard</h1>
-            <p class="muted" id="welcomeCopy">Welcome, manage your money with confidence.</p>
+            <h1 class="page-title" id="welcomeTitle">Dashboard</h1>
+            <p class="muted" id="welcomeCopy">Here's what's happening with your money. Let's manage it.</p>
           </div>
         </div>
       </div>
 
       <div class="overview-grid">
         <div class="card stat-card">
-          <span class="label">Total Budget</span>
+          <div class="stat-top">
+            <span class="label">Total Budget</span>
+            <span class="stat-icon">🐷</span>
+          </div>
           <div class="stat-value" id="totalBudget">$0</div>
         </div>
         <div class="card stat-card">
-          <span class="label">Total Expenses</span>
+          <div class="stat-top">
+            <span class="label">Total Expenses</span>
+            <span class="stat-icon">🧾</span>
+          </div>
           <div class="stat-value" id="totalExpenses">$0</div>
         </div>
         <div class="card stat-card">
-          <span class="label">Budgets</span>
+          <div class="stat-top">
+            <span class="label">Budgets</span>
+            <span class="stat-icon">📂</span>
+          </div>
           <div class="stat-value" id="budgetCount">0</div>
         </div>
         <div class="card stat-card">
-          <span class="label">Expenses</span>
+          <div class="stat-top">
+            <span class="label">Expenses</span>
+            <span class="stat-icon">💳</span>
+          </div>
           <div class="stat-value" id="expenseCount">0</div>
         </div>
       </div>
 
-      <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <h3>Budget Activity</h3>
-          <a href="budgets.html" class="chip">Manage</a>
+      <div class="activity-grid">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <h3>Budget Activity</h3>
+          </div>
+          <div class="bar-chart" id="budgetActivity"></div>
         </div>
-        <div class="bar-chart" id="budgetActivity"></div>
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Latest Budgets</h3>
+          </div>
+          <div id="latestBudgets"></div>
+        </div>
       </div>
 
       <div class="lists">
         <div class="card">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3>Latest Budgets</h3>
-            <a href="budgets.html" class="button secondary" style="padding:8px 12px;">Add Budget</a>
-          </div>
-          <div id="latestBudgets"></div>
-        </div>
-        <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
             <h3>Recent Expenses</h3>
             <a href="expenses.html" class="button secondary" style="padding:8px 12px;">View All</a>
           </div>
-          <div id="latestExpenses"></div>
+          <table class="table" id="latestExpensesTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Budget</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="latestExpensesBody"></tbody>
+          </table>
+          <div class="empty-state hidden" id="latestExpensesEmpty">No expenses yet. Add one to see it here.</div>
         </div>
       </div>
     </main>
