@@ -154,6 +154,40 @@
   margin-top: 18px;
 }
 
+.latest-budget-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+}
+
+.lb-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lb-head .icon-circle {
+  flex-shrink: 0;
+}
+
+.lb-meta {
+  flex: 1;
+}
+
+.lb-amount {
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.lb-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 13px;
+}
+
 .list-item {
   display: flex;
   align-items: center;

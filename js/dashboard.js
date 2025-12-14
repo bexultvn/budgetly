@@ -89,22 +89,30 @@ function renderLatestBudgets(budgets) {
 
   latest.forEach((budget) => {
     const stats = getBudgetStats(budget);
+    const percent = Math.round(stats.percent) || 0;
+    const progressClass = percent > 90 ? 'danger' : percent > 70 ? 'warning' : '';
     const item = $(`
-      <div class="list-item">
-        <div class="icon-circle primary">${budget.icon}</div>
-        <div style="flex:1;">
-          <strong>${budget.title}</strong>
-          <div class="muted">${formatCurrency(stats.spent)} of ${formatCurrency(budget.limit)}</div>
-          <div class="progress ${stats.percent > 90 ? 'danger' : stats.percent > 70 ? 'warning' : ''}">
-            <span style="width:0%"></span>
+      <div class="latest-budget-card">
+        <div class="lb-head">
+          <div class="icon-circle primary">${budget.icon}</div>
+          <div class="lb-meta">
+            <strong>${budget.title}</strong>
+            <div class="muted">${(budget.expenses || []).length} Item${(budget.expenses || []).length === 1 ? '' : 's'}</div>
           </div>
+          <div class="lb-amount">${formatCurrency(budget.limit)}</div>
         </div>
-        <span class="pill">${Math.round(stats.percent)}%</span>
+        <div class="progress ${progressClass}">
+          <span style="width:0%"></span>
+        </div>
+        <div class="lb-footer">
+          <span class="muted">${formatCurrency(stats.spent)} Spend</span>
+          <span class="muted">${formatCurrency(stats.remaining)} Remaining</span>
+        </div>
       </div>
     `);
     list.append(item);
     setTimeout(() => {
-      item.find('.progress span').css('width', `${stats.percent}%`);
+      item.find('.progress span').css('width', `${percent}%`);
     }, 40);
   });
 }
