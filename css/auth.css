@@ -4,14 +4,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px;
+  padding: 36px;
 }
 
 .auth-shell {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
-  gap: 24px;
-  max-width: 1180px;
+  gap: 25px;
+  max-width: 1230px;
   width: 100%;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .auth-visual .logo {
-  color: #fff;
+  color: white;
 }
 
 .auth-visual .logo span {
@@ -44,13 +44,13 @@
 
 .auth-visual h1 {
   margin: 10px 0 6px;
-  font-size: 32px;
+  font-size: 34px;
   letter-spacing: -0.02em;
 }
 
 .auth-visual p {
   color: rgba(248, 250, 252, 0.8);
-  font-size: 15px;
+  font-size: 1rem;
   line-height: 1.6;
 }
 
@@ -58,7 +58,7 @@
   background: rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   padding: 16px;
-  margin-top: 6px;
+  margin-top: 7px;
   border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow: 0 16px 50px rgba(0, 0, 0, 0.18);
 }
