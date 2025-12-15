@@ -98,7 +98,7 @@
   display: grid;
   grid-template-columns: 60px 1fr;
   gap: 12px;
-  align-items: end;
+  align-items: stretch;
   min-height: 260px;
 }
 
@@ -110,18 +110,23 @@
   color: var(--muted);
   font-size: 12px;
   font-weight: 700;
-  min-height: 220px;
+  padding-bottom: 40px; /* align with x-axis label space */
+  box-sizing: border-box;
 }
 
 .histogram-plot {
   position: relative;
   min-height: 260px;
   overflow: visible;
+  padding-bottom: 40px; /* space for x-axis labels */
 }
 
 .histogram-grid {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 40px; /* match label space so lines stop at axis */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -136,7 +141,10 @@
 
 .histogram-bars {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 40px; /* leave room for labels below */
   display: flex;
   align-items: flex-end;
   gap: 22px;
@@ -144,20 +152,23 @@
 }
 
 .bar-group {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  gap: 10px;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
   flex: 1;
   min-width: 70px;
-  text-align: center;
 }
 
 .bar-stack {
   position: relative;
-  height: 220px;
+  height: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  width: 100%;
 }
 
 .bar-col {
@@ -224,10 +235,18 @@
 }
 
 .bar-label {
+  position: absolute;
+  bottom: -26px;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
   font-weight: 700;
   color: #111827;
   font-size: 13px;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .delete-expense {

@@ -45,8 +45,8 @@ function renderActivity(budgets) {
   const { ticks, topTick } = buildNiceTicks(budgets);
   const formatTick = (val) => {
     if (val >= 1000) {
-      const rounded = Math.round((val / 1000) * 10) / 10;
-      return `${rounded % 1 === 0 ? rounded.toFixed(0) : rounded}k`;
+      const rounded = Math.round(val / 1000);
+      return `${rounded}K`;
     }
     return Math.round(val).toString();
   };
@@ -103,18 +103,10 @@ function buildNiceTicks(budgets, tickCount = 5) {
       return Math.max(max, Number(b.limit) || 0, stats.spent);
     }, 0) || 1;
 
-  const roughStep = rawMax / (tickCount - 1);
-  const pow = 10 ** Math.floor(Math.log10(roughStep || 1));
-  const d = roughStep / pow;
-  let nice;
-  if (d <= 1) nice = 1;
-  else if (d <= 2) nice = 2;
-  else if (d <= 2.5) nice = 2.5;
-  else if (d <= 5) nice = 5;
-  else nice = 10;
-  const step = nice * pow;
-  const topTick = step * (tickCount - 1);
-  const ticks = Array.from({ length: tickCount }, (_, i) => i * step);
+  const step = 50000; // 50K increments
+  const minimumTop = 200000; // show at least up to 200K
+  const topTick = Math.max(Math.ceil(rawMax / step) * step, minimumTop);
+  const ticks = Array.from({ length: Math.floor(topTick / step) + 1 }, (_, i) => i * step);
   return { ticks, topTick };
 }
 
