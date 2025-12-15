@@ -112,22 +112,21 @@
             <button class="close-modal" data-close="#budgetModal">✕</button>
           </div>
           <form id="budgetForm">
-            <div class="input-group">
-              <label for="budgetTitle">Budget name</label>
-              <input type="text" id="budgetTitle" required placeholder="Housing, Groceries, etc.">
-            </div>
-            <div class="input-group">
-              <label for="budgetLimit">Monthly limit</label>
-              <input type="number" id="budgetLimit" min="0" step="10" required placeholder="500">
-            </div>
-            <div class="input-group">
-              <label for="budgetIcon">Icon</label>
+            <div class="input-group icon-row">
               <div class="emoji-select">
                 <button type="button" class="emoji-trigger" id="emojiTrigger" aria-expanded="false" aria-controls="emojiPicker">💳</button>
                 <span class="emoji-hint muted">Choose an icon</span>
                 <input type="hidden" id="budgetIcon" value="💳">
               </div>
               <div class="emoji-picker hidden" id="emojiPicker" role="listbox"></div>
+            </div>
+            <div class="input-group">
+              <label for="budgetTitle">Budget Name</label>
+              <input type="text" id="budgetTitle" required placeholder="e.g. Home Decor">
+            </div>
+            <div class="input-group">
+              <label for="budgetLimit">Budget Amount</label>
+              <input type="number" id="budgetLimit" min="0" step="10" required placeholder="e.g. 5000">
             </div>
             <button type="submit" class="button" id="budgetSubmitBtn">Create Budget</button>
           </form>

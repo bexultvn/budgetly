@@ -27,32 +27,48 @@
 
       <div class="overview-grid">
         <div class="card stat-card">
-          <div class="stat-top">
+          <div>
             <span class="label">Total Budget</span>
-            <span class="stat-icon">💰</span>
+            <div class="stat-value" id="totalBudget">$0</div>
           </div>
-          <div class="stat-value" id="totalBudget">$0</div>
+          <div class="stat-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 10c-1.4-1.4-3.7-2-7-2-3 0-5 .7-6 2v5h13v-3"></path>
+              <path d="M7 10V8a2 2 0 0 1 2-2h5"></path>
+              <path d="M15 18v1"></path>
+              <path d="M9 18v1"></path>
+              <path d="M9 14v1"></path>
+              <path d="M15 14v1"></path>
+              <path d="M19 14h1.5a1.5 1.5 0 1 0 0-3H19"></path>
+            </svg>
+          </div>
         </div>
         <div class="card stat-card">
-          <div class="stat-top">
-            <span class="label">Total Expenses</span>
-            <span class="stat-icon">💰</span>
+          <div>
+            <span class="label">Total Spend</span>
+            <div class="stat-value" id="totalExpenses">$0</div>
           </div>
-          <div class="stat-value" id="totalExpenses">$0</div>
+          <div class="stat-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="3" width="14" height="18" rx="3"></rect>
+              <path d="M9 7h6"></path>
+              <path d="M9 11h6"></path>
+              <path d="M9 15h4"></path>
+            </svg>
+          </div>
         </div>
         <div class="card stat-card">
-          <div class="stat-top">
-            <span class="label">Budgets</span>
-            <span class="stat-icon">💵</span>
+          <div>
+            <span class="label">No. of Budgets</span>
+            <div class="stat-value" id="budgetCount">0</div>
           </div>
-          <div class="stat-value" id="budgetCount">0</div>
-        </div>
-        <div class="card stat-card">
-          <div class="stat-top">
-            <span class="label">Expenses</span>
-            <span class="stat-icon">💳</span>
+          <div class="stat-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 7h14a2 2 0 0 1 2 2v7.5A2.5 2.5 0 0 1 18.5 19H7a2 2 0 0 1-2-2V7Z"></path>
+              <path d="M5 11h16"></path>
+              <path d="M7 15h2"></path>
+            </svg>
           </div>
-          <div class="stat-value" id="expenseCount">0</div>
         </div>
       </div>
 

@@ -331,7 +331,12 @@
   transform: translateY(-1px);
 }
 
-#budgetForm,
+#budgetForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 #expenseForm {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -346,6 +351,90 @@
 #budgetForm .button,
 #expenseForm .button {
   grid-column: 1 / -1;
+}
+
+/* Budget modal refinements */
+#budgetModal .modal-card {
+  max-width: 640px;
+  padding: 28px 32px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+}
+
+#budgetModal .modal-header h3 {
+  font-size: 26px;
+  margin: 0;
+  font-weight: 800;
+}
+
+#budgetModal .modal-header {
+  margin-bottom: 12px;
+}
+
+#budgetModal #budgetForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#budgetModal .icon-row {
+  margin-top: 4px;
+}
+
+#budgetModal #budgetForm label {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+#budgetModal #budgetForm input {
+  padding: 13px 15px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #fbfbfd;
+  font-size: 15px;
+}
+
+#budgetModal #budgetSubmitBtn {
+  width: 100%;
+  background: #b5adf8;
+  border: 1px solid #b5adf8;
+  box-shadow: none;
+  font-size: 16px;
+  padding: 15px;
+  color: #fff;
+  border-radius: 12px;
+}
+
+#budgetModal .emoji-select {
+  align-items: flex-start;
+}
+
+#budgetModal .emoji-trigger {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background: #f8f8fb;
+  border: 1px solid #e5e7eb;
+  font-size: 26px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+#budgetModal .emoji-hint {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+#budgetModal .emoji-picker {
+  width: 100%;
+}
+
+#budgetModal .close-modal {
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  background: #f3f4f6;
+  color: #374151;
 }
 
 @media (max-width: 900px) {
