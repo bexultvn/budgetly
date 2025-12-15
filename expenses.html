@@ -24,14 +24,14 @@
         </div>
       </div>
 
-      <div class="expense-toolbar">
+      <section class="expense-toolbar">
         <div class="filter-group">
           <select id="filterBudget">
             <option value="all">All budgets</option>
           </select>
         </div>
         <button class="button" id="openExpenseModal">+</button>
-      </div>
+      </setionc>
 
       <div class="card">
         <table class="table" id="expenseTable">
@@ -58,19 +58,19 @@
           <form id="expenseForm">
             <div class="input-group">
               <label for="expenseBudget">Budget</label>
-              <select id="expenseBudget" required></select>
+              <select id="expenseBudget" name="expenseBudget" required></select>
             </div>
             <div class="input-group">
               <label for="expenseName">Expense name</label>
-              <input type="text" id="expenseName" required placeholder="Subscription, Restaurant, ...">
+              <input type="text" id="expenseName" name="expenseName" required placeholder="Subscription, Restaurant, ...">
             </div>
             <div class="input-group">
               <label for="expenseAmount">Amount</label>
-              <input type="number" id="expenseAmount" min="0" step="1" required>
+              <input type="number" id="expenseAmount" name="expenseAmount" min="0" step="1" required>
             </div>
             <div class="input-group">
               <label for="expenseDate">Date</label>
-              <input type="date" id="expenseDate" required>
+              <input type="date" id="expenseDate" name="expenseDate" required>
             </div>
             <button type="submit" class="button">Save Expense</button>
           </form>
