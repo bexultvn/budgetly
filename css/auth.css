@@ -3,14 +3,14 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
   padding: 32px;
+  justify-content: center;
 }
 
 .auth-shell {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
   gap: 24px;
+  grid-template-columns: 1.1fr 1fr;
   max-width: 1180px;
   width: 100%;
 }
@@ -44,8 +44,8 @@
 
 .auth-visual h1 {
   margin: 10px 0 6px;
-  font-size: 32px;
   letter-spacing: -0.02em;
+  font-size: 32px;
 }
 
 .auth-visual p {
@@ -73,8 +73,8 @@
 .mini-card {
   background: rgba(255, 255, 255, 0.1);
   padding: 12px;
-  border-radius: 12px;
   display: flex;
+  border-radius: 12px;
   flex-direction: column;
   gap: 4px;
 }
@@ -86,8 +86,8 @@
   flex-direction: column;
   gap: 18px;
   border-radius: 18px;
-  border: 1px solid var(--border);
   box-shadow: var(--shadow);
+  border: 1px solid var(--border);
   align-self: center;
 }
 
@@ -102,8 +102,8 @@
   padding: 6px;
   border-radius: 12px;
   gap: 6px;
-  width: fit-content;
   border: 1px solid var(--border);
+  width: fit-content;
 }
 
 .toggle-row button {
