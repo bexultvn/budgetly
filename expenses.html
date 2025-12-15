@@ -76,6 +76,20 @@
           </form>
         </div>
       </div>
+
+      <div class="modal" id="confirmModal">
+        <div class="modal-card">
+          <div class="modal-header">
+            <h3 id="confirmTitle">Are you sure?</h3>
+            <button class="close-modal" data-close="#confirmModal">✕</button>
+          </div>
+          <p id="confirmMessage" class="muted" style="margin: 0 0 12px;">This action cannot be undone.</p>
+          <div class="modal-actions">
+            <button class="button ghost" type="button" id="confirmCancel">Cancel</button>
+            <button class="button danger" type="button" id="confirmProceed">Delete</button>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 

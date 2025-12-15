@@ -1,19 +1,26 @@
 const currencyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
-  currency: 'USD',
+  currency: 'KZT',
+  currencyDisplay: 'narrowSymbol',
   maximumFractionDigits: 0,
 });
 
 function formatCurrency(value) {
   const amount = Number(value) || 0;
-  return currencyFormatter.format(amount);
+  const parts = currencyFormatter.formatToParts(amount);
+  const symbol = parts.find((p) => p.type === 'currency')?.value || '₸';
+  const number = parts
+    .filter((p) => p.type !== 'currency')
+    .map((p) => p.value)
+    .join('');
+  return `${number}${symbol}`;
 }
 
 function formatDate(date) {
   if (!date) return '-';
   const parsed = new Date(date);
   if (Number.isNaN(parsed.getTime())) return '-';
-  return parsed.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return parsed.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
 function getBudgetStats(budget) {
@@ -160,4 +167,50 @@ function renderUserBadge(user) {
   $('.user-name').text(user.name);
   $('.user-email').text(user.email || '');
   $('.user-avatar').text(initials);
+}
+
+function showConfirmModal(options) {
+  const { title = 'Are you sure?', message = 'This action cannot be undone.', confirmText = 'Confirm', cancelText = 'Cancel', onConfirm } =
+    options || {};
+  const $modal = $('#confirmModal');
+  if (!$modal.length) {
+    if (window.confirm(message || title) && typeof onConfirm === 'function') {
+      onConfirm();
+    }
+    return;
+  }
+
+  $('#confirmTitle').text(title);
+  $('#confirmMessage').text(message);
+  $('#confirmProceed').text(confirmText);
+  $('#confirmCancel').text(cancelText);
+
+  const cleanup = () => {
+    $modal.removeClass('active');
+    $('#confirmProceed').off('click.confirm');
+    $('#confirmCancel').off('click.confirm');
+    $('.close-modal[data-close="#confirmModal"]').off('click.confirm');
+    $modal.off('click.confirm');
+  };
+
+  $('#confirmProceed')
+    .off('click.confirm')
+    .on('click.confirm', () => {
+      cleanup();
+      if (typeof onConfirm === 'function') {
+        onConfirm();
+      }
+    });
+
+  $('#confirmCancel').off('click.confirm').on('click.confirm', cleanup);
+
+  $('.close-modal[data-close="#confirmModal"]').off('click.confirm').on('click.confirm', cleanup);
+
+  $modal.off('click.confirm').on('click.confirm', (e) => {
+    if ($(e.target).hasClass('modal')) {
+      cleanup();
+    }
+  });
+
+  $modal.addClass('active');
 }

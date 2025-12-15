@@ -112,8 +112,15 @@ function renderExpenseTable() {
 
   $('.delete-expense').off('click').on('click', function () {
     const id = $(this).data('id');
-    deleteExpense(id);
-    refreshExpenses();
+    showConfirmModal({
+      title: 'Delete expense?',
+      message: 'This expense will be permanently removed.',
+      confirmText: 'Delete expense',
+      onConfirm: () => {
+        deleteExpense(id);
+        refreshExpenses();
+      },
+    });
   });
 }
 

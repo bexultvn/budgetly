@@ -1,3 +1,6 @@
+const DEFAULT_ICON = '💳';
+const EMOJI_SET = ['💳', '🏠', '🛒', '🚗', '🍽️', '🎟️', '🎁', '🧾', '✈️', '🎮', '🏋️', '🎧', '🍿', '💻', '🏖️', '📚', '🐾', '🧴', '🚌', '🪴', '🧺', '🍼', '🏥', '🎉', '📦', '💡', '🍎', '🪙', '⛽️'];
+
 let selectedBudgetId = null;
 
 $(function () {
@@ -7,6 +10,7 @@ $(function () {
   renderUserBadge(data.user);
   setActiveNav('budgets');
   initSidebarToggle();
+  initEmojiPicker();
   bindEvents();
   refreshBudgets();
 });
@@ -37,13 +41,14 @@ function bindEvents() {
     e.preventDefault();
     const title = $('#budgetTitle').val().trim();
     const limit = $('#budgetLimit').val().trim();
-    const icon = $('#budgetIcon').val();
+    const icon = $('#budgetIcon').val() || DEFAULT_ICON;
     if (!title || !limit) return;
 
     const editingId = $('#budgetForm').data('editing');
     if (editingId) {
       updateBudget(editingId, { title, limit, icon });
       selectedBudgetId = editingId;
+      setBudgetFormMode(false);
     } else {
       addBudget({
         title,
@@ -55,6 +60,7 @@ function bindEvents() {
     $('#budgetForm')[0].reset();
     $('#budgetForm').data('editing', '');
     $('#budgetModal .modal-header h3').text('New Budget');
+    setBudgetFormMode(false);
     closeModal('#budgetModal');
     refreshBudgets();
   });
@@ -96,19 +102,25 @@ function bindEvents() {
     if (!budget) return;
     $('#budgetTitle').val(budget.title);
     $('#budgetLimit').val(budget.limit);
-    $('#budgetIcon').val(budget.icon);
+    setBudgetIcon(budget.icon || DEFAULT_ICON);
     $('#budgetForm').data('editing', budget.id);
     $('#budgetModal .modal-header h3').text('Edit Budget');
+    setBudgetFormMode(true);
     openModal('#budgetModal');
   });
 
   $('#deleteBudgetBtn').on('click', () => {
     if (!selectedBudgetId) return;
-    if (confirm('Delete this budget and its expenses?')) {
-      deleteBudget(selectedBudgetId);
-      selectedBudgetId = null;
-      refreshBudgets();
-    }
+    showConfirmModal({
+      title: 'Delete budget?',
+      message: 'This will remove the budget and all of its expenses.',
+      confirmText: 'Delete budget',
+      onConfirm: () => {
+        deleteBudget(selectedBudgetId);
+        selectedBudgetId = null;
+        refreshBudgets();
+      },
+    });
   });
 }
 
@@ -250,7 +262,7 @@ function renderBudgetDetail(budget) {
           <td>${expense.name}</td>
           <td>${formatCurrency(expense.amount)}</td>
           <td>${formatDate(expense.date)}</td>
-          <td><button class="button ghost delete-expense" data-id="${expense.id}" style="padding:6px 10px;">🗑</button></td>
+          <td><button class="delete-expense" data-id="${expense.id}">Delete</button></td>
         </tr>
       `);
     });
@@ -260,8 +272,15 @@ function renderBudgetDetail(budget) {
     .off('click')
     .on('click', function () {
       const id = $(this).data('id');
-      deleteExpense(id);
-      refreshBudgets();
+      showConfirmModal({
+        title: 'Delete expense?',
+        message: 'This expense will be removed from the budget.',
+        confirmText: 'Delete expense',
+        onConfirm: () => {
+          deleteExpense(id);
+          refreshBudgets();
+        },
+      });
     });
 
   $('#inlineExpenseDate').val(new Date().toISOString().slice(0, 10));
@@ -291,11 +310,70 @@ $('#backToBudgets').on('click', () => {
 
 function resetBudgetForm() {
   $('#budgetForm')[0].reset();
+  setBudgetIcon(DEFAULT_ICON);
   $('#budgetForm').data('editing', '');
   $('#budgetModal .modal-header h3').text('New Budget');
+  setBudgetFormMode(false);
+}
+
+function setBudgetIcon(emoji) {
+  const icon = emoji || DEFAULT_ICON;
+  $('#budgetIcon').val(icon);
+  $('#emojiTrigger').text(icon);
+}
+
+function setBudgetFormMode(isEditing) {
+  const $submit = $('#budgetSubmitBtn');
+  if (!$submit.length) return;
+  $submit.text(isEditing ? 'Save Changes' : 'Create Budget');
+}
+
+function initEmojiPicker() {
+  const $picker = $('#emojiPicker');
+  const $trigger = $('#emojiTrigger');
+  if (!$picker.length || !$trigger.length) return;
+
+  setBudgetIcon($('#budgetIcon').val() || DEFAULT_ICON);
+  $picker.empty();
+  EMOJI_SET.forEach((emoji) => {
+    const btn = $(`<button type="button" class="emoji-option" data-emoji="${emoji}" aria-label="${emoji}">${emoji}</button>`);
+    btn.on('click', () => {
+      setBudgetIcon(emoji);
+      closeEmojiPicker();
+    });
+    $picker.append(btn);
+  });
+
+  const togglePicker = () => {
+    $picker.toggleClass('hidden');
+    const expanded = !$picker.hasClass('hidden');
+    $trigger.attr('aria-expanded', expanded ? 'true' : 'false');
+  };
+
+  const closeEmojiPicker = () => {
+    $picker.addClass('hidden');
+    $trigger.attr('aria-expanded', 'false');
+  };
+
+  $trigger.off('click').on('click', (e) => {
+    e.preventDefault();
+    togglePicker();
+  });
+
+  $(document)
+    .off('click.emoji')
+    .on('click.emoji', (e) => {
+      if (!$(e.target).closest('.emoji-select').length && !$(e.target).closest('#emojiPicker').length) {
+        closeEmojiPicker();
+      }
+    });
 }
 
 function openModal(selector) {
+  if (selector === '#budgetModal') {
+    $('#emojiPicker').addClass('hidden');
+    $('#emojiTrigger').attr('aria-expanded', 'false');
+  }
   $(selector).addClass('active');
 }
 
