@@ -11,7 +11,7 @@ $(function () {
     $(`.mode-btn[data-mode="${mode}"]`).addClass('active');
     if (mode === 'register') {
       $('.name-group').removeClass('hidden');
-      $('#formTitle').text('Create your account');
+      $('#formTitle').text('Create your account!');
       $('#modeHelper').text('Already have an account? Switch to Login.');
     } else {
       $('.name-group').addClass('hidden');
@@ -32,8 +32,8 @@ $(function () {
   $('#authForm').on('submit', function (e) {
     e.preventDefault();
     const name = $('#name').val().trim();
-    const email = $('#email').val().trim().toLowerCase();
     const pin = $('#pin').val().trim();
+    const email = $('#email').val().trim().toLowerCase();
     if (!email || !pin) {
       showMessage('error', 'Please fill in all required fields.');
       return;
@@ -47,8 +47,8 @@ $(function () {
         return;
       }
       const user = { name, email, pin };
-      data.user = user;
       data.isLoggedIn = true;
+      data.user = user;
       saveData(data);
       showMessage('success', 'Account created. Redirecting...');
       setTimeout(() => (window.location.href = 'dashboard.html'), 500);
