@@ -12,11 +12,15 @@ $(function () {
     if (mode === 'register') {
       $('.name-group').removeClass('hidden');
       $('#formTitle').text('Create your account');
-      $('#modeHelper').text('Already have an account? Switch to Login.');
+      $('#modeHelper').text('Already have an account?');
+      $('#modeLink').text('Login').data('mode', 'login');
+      $('#authSubmit').text('Register');
     } else {
       $('.name-group').addClass('hidden');
       $('#formTitle').text('Welcome back');
-      $('#modeHelper').text('Need an account? Switch to Register.');
+      $('#modeHelper').text('Need an account?');
+      $('#modeLink').text('Register').data('mode', 'register');
+      $('#authSubmit').text('Login');
     }
     $message.addClass('hidden');
   }
@@ -28,6 +32,13 @@ $(function () {
   $('.mode-btn').on('click', function () {
     setMode($(this).data('mode'));
   });
+
+  $('#modeLink').on('click', function () {
+    const nextMode = $(this).data('mode');
+    if (nextMode) setMode(nextMode);
+  });
+
+  setMode(mode);
 
   $('#authForm').on('submit', function (e) {
     e.preventDefault();

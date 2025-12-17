@@ -97,14 +97,11 @@ function renderSidebar(activePage = '') {
   if (!$sidebar.length) return;
 
   $sidebar.html(`
-    <div class="logo-stack">
-      <div class="logo-mark">B</div>
-      <div class="logo-word"> 
-        <span class="logo-name">Budgetly</span>
-      </div>
+    <div class="sidebar-profile">
+      <div class="user-avatar">B</div>
+      <div class="user-name">User</div>
     </div>
-    <div class="nav">
-      <div class="nav-label">Overview</div>
+    <div class="nav nav-main">
       <a class="nav-link" data-page="dashboard" href="dashboard.html">
         <span class="nav-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -138,9 +135,17 @@ function renderSidebar(activePage = '') {
         <span class="nav-text">Expenses</span>
       </a>
     </div>
-    <div class="sidebar-footer">
-      <div class="user-avatar">B</div>
-      <span class="profile-label">Profile</span>
+    <div class="nav nav-footer">
+      <button class="nav-link logout-link" id="logoutBtn" type="button">
+        <span class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <path d="M16 17l5-5-5-5"></path>
+            <path d="M21 12H9"></path>
+          </svg>
+        </span>
+        <span class="nav-text">Logout</span>
+      </button>
     </div>
   `);
 

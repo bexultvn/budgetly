@@ -13,7 +13,10 @@
 <body class="auth-body">
   <div class="auth-shell">
     <div class="auth-visual">
-      <div class="logo"><span>⟡</span>Budgetly</div>
+      <div class="brand-lockup">
+        <img class="brand-logo" src="images/logo.png" alt="Budgetly logo">
+        <div class="brand-name">Budgetly</div>
+      </div>
       <div class="glass-card">
         <div class="chip">Modern Finance</div>
         <h1>Take control of your money.</h1>
@@ -32,8 +35,7 @@
         </div>
       </div>
       <div class="surface" style="margin-top:18px;">
-        <strong>100% frontend.</strong><br>
-        LocalStorage keeps your session, budgets, and expenses safe between visits.
+        “A budget is telling your money where to go instead of wondering where it went.” – John C. Maxwell
       </div>
     </div>
     <div class="auth-form">
@@ -56,13 +58,13 @@
           <input type="email" id="email" placeholder="you@example.com" required>
         </div>
         <div class="input-group">
-          <label for="pin">Passcode (local only)</label>
+          <label for="pin">Password</label>
           <input type="password" id="pin" placeholder="••••••" minlength="4" required>
         </div>
-        <button type="submit" class="button">Continue</button>
+        <button type="submit" class="button" id="authSubmit">Login</button>
         <div class="auth-footer">
-          <span class="helper">Your data stays in this browser using localStorage.</span>
-          <span class="helper" id="modeHelper">Need an account? Switch to Register.</span>
+          <span class="helper" id="modeHelper">Need an account?</span>
+          <button type="button" class="text-link" id="modeLink" data-mode="register">Register</button>
         </div>
       </form>
     </div>
