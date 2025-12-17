@@ -299,8 +299,8 @@
 }
 
 .emoji-trigger {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
   border: 1px solid var(--border);
   background: #fff;
@@ -329,6 +329,7 @@
   max-height: 220px;
   overflow: auto;
 }
+
 
 .emoji-option {
   border: 1px solid #e5e7eb;
@@ -359,6 +360,17 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+#budgetForm .input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#budgetForm .input-group input,
+#budgetForm .input-group select {
+  width: 100%;
 }
 
 #expenseForm {
@@ -406,48 +418,17 @@
   margin-top: 4px;
 }
 
-#budgetModal #budgetForm label {
-  font-size: 17px;
-  font-weight: 800;
-}
-
-#budgetModal #budgetForm input {
-  padding: 13px 15px;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  background: #fbfbfd;
-  font-size: 15px;
-}
-
 #budgetModal #budgetSubmitBtn {
   width: 100%;
-  background: #b5adf8;
-  border: 1px solid #b5adf8;
-  box-shadow: none;
-  font-size: 16px;
-  padding: 15px;
-  color: #fff;
-  border-radius: 12px;
-}
-
-#budgetModal .emoji-select {
-  align-items: flex-start;
 }
 
 #budgetModal .emoji-trigger {
-  width: 64px;
-  height: 64px;
-  border-radius: 12px;
   background: #f8f8fb;
   border: 1px solid #e5e7eb;
-  font-size: 26px;
+  font-size: 20px;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
 }
 
-#budgetModal .emoji-hint {
-  margin-top: 8px;
-  font-size: 14px;
-}
 
 #budgetModal .emoji-picker {
   width: 100%;

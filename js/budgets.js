@@ -334,21 +334,6 @@ function initEmojiPicker() {
   if (!$picker.length || !$trigger.length) return;
 
   setBudgetIcon($('#budgetIcon').val() || DEFAULT_ICON);
-  $picker.empty();
-  EMOJI_SET.forEach((emoji) => {
-    const btn = $(`<button type="button" class="emoji-option" data-emoji="${emoji}" aria-label="${emoji}">${emoji}</button>`);
-    btn.on('click', () => {
-      setBudgetIcon(emoji);
-      closeEmojiPicker();
-    });
-    $picker.append(btn);
-  });
-
-  const togglePicker = () => {
-    $picker.toggleClass('hidden');
-    const expanded = !$picker.hasClass('hidden');
-    $trigger.attr('aria-expanded', expanded ? 'true' : 'false');
-  };
 
   const closeEmojiPicker = () => {
     $picker.addClass('hidden');
@@ -357,7 +342,9 @@ function initEmojiPicker() {
 
   $trigger.off('click').on('click', (e) => {
     e.preventDefault();
-    togglePicker();
+    $picker.toggleClass('hidden');
+    const expanded = !$picker.hasClass('hidden');
+    $trigger.attr('aria-expanded', expanded ? 'true' : 'false');
   });
 
   $(document)
@@ -367,6 +354,16 @@ function initEmojiPicker() {
         closeEmojiPicker();
       }
     });
+
+  $picker.empty();
+  EMOJI_SET.forEach((emoji) => {
+    const btn = $(`<button type="button" class="emoji-option" data-emoji="${emoji}" aria-label="${emoji}">${emoji}</button>`);
+    btn.on('click', () => {
+      setBudgetIcon(emoji);
+      closeEmojiPicker();
+    });
+    $picker.append(btn);
+  });
 }
 
 function openModal(selector) {
