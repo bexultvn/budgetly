@@ -75,18 +75,6 @@
       <div class="activity-grid">
         <div class="card activity-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <h3>Budget Activity</h3>
-          </div>
-          <div class="bar-chart" id="budgetActivity"></div>
-        </div>
-        <div class="card latest-budgets-card">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3>Latest Budgets</h3>
-          </div>
-          <div id="latestBudgets"></div>
-        </div>
-        <div class="card expenses-card">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
             <h3>Recent Expenses</h3>
           </div>
           <table class="table" id="latestExpensesTable">
@@ -102,6 +90,22 @@
             <tbody id="latestExpensesBody"></tbody>
           </table>
           <div class="empty-state hidden" id="latestExpensesEmpty">No expenses</div>
+        </div>
+        <div class="card overview-card">
+          <div class="overview-head">
+            <h3>Financial Overview</h3>
+          </div>
+          <div class="donut-shell">
+            <div class="donut" id="overviewDonut" role="img" aria-label="Remaining budget and total expenses"></div>
+            <div class="donut-center">
+              <span class="muted">Remaining</span>
+              <strong id="overviewRemaining">$0</strong>
+            </div>
+          </div>
+          <div class="donut-legend">
+            <span><i class="dot remaining"></i> Remaining</span>
+            <span><i class="dot spent"></i> Expenses</span>
+          </div>
         </div>
       </div>
 

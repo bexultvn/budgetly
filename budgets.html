@@ -113,7 +113,6 @@
           </div>
           <form id="budgetForm">
             <div class="input-group icon-row">
-              <label>Icon</label>
               <div class="emoji-select">
                 <button type="button" class="emoji-trigger" id="emojiTrigger" aria-expanded="false" aria-controls="emojiPicker">💳</button>
                 <span class="emoji-hint muted">Choose an icon</span>
@@ -122,12 +121,12 @@
               <div class="emoji-picker hidden" id="emojiPicker" role="listbox"></div>
             </div>
             <div class="input-group">
-              <label for="budgetTitle">Budget Name</label>
-              <input type="text" id="budgetTitle" required placeholder="e.g. Home Decor">
+              <label for="budgetTitle">Name</label>
+              <input type="text" id="budgetTitle" required>
             </div>
             <div class="input-group">
-              <label for="budgetLimit">Budget Amount</label>
-              <input type="number" id="budgetLimit" min="0" step="10" required placeholder="e.g. 5000">
+              <label for="budgetLimit">Amount</label>
+              <input type="number" id="budgetLimit" min="0" step="10000" value="0" required>
             </div>
             <button type="submit" class="button" id="budgetSubmitBtn">Create Budget</button>
           </form>

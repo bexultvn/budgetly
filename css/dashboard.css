@@ -8,9 +8,7 @@
 .activity-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-template-areas:
-    'activity budgets'
-    'expenses budgets';
+  grid-template-areas: 'activity overview';
   gap: 14px;
   align-items: start;
 }
@@ -19,17 +17,84 @@
   grid-area: activity;
 }
 
-.latest-budgets-card {
-  grid-area: budgets;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  padding: 0;
+.overview-card {
+  grid-area: overview;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.expenses-card {
-  grid-area: expenses;
+.overview-card {
+  --donut-remaining: #7c3aed;
+  --donut-expense: #f97316;
 }
+
+.overview-head h3 {
+  margin: 0;
+}
+
+.donut-shell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 260px;
+}
+
+.donut {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: conic-gradient(var(--donut-remaining) 0 var(--remain-percent, 0%), var(--donut-expense) var(--remain-percent, 0%) 100%);
+  position: relative;
+}
+
+.donut::after {
+  content: '';
+  position: absolute;
+  inset: 24px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #eef2ff;
+}
+
+.donut-center {
+  position: absolute;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 1;
+}
+
+.donut-center strong {
+  font-size: 26px;
+  color: #111827;
+}
+
+.donut-legend {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.donut-legend .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.donut-legend .dot.remaining {
+  background: #7c3aed;
+}
+
+.donut-legend .dot.spent {
+  background: #f97316;
+}
+
 
 .stat-card {
   display: flex;
@@ -271,8 +336,7 @@
     grid-template-columns: 1fr;
     grid-template-areas:
       'activity'
-      'budgets'
-      'expenses';
+      'overview';
   }
 }
 
