@@ -165,9 +165,9 @@ function renderLatestExpenses(budgets) {
   recent.forEach((expense) => {
     const row = $(`
       <tr>
-        <td>${expense.name}</td>
         <td><span class="budget">${expense.icon || '💳'} ${expense.budgetTitle || ''}</span></td>
         <td class="amount">${formatCurrency(expense.amount)}</td>
+        <td>${expense.name}</td>
         <td class="date">${formatDate(expense.date)}</td>
         <td style="text-align:right;"><button class="delete-expense" data-id="${expense.id}">Delete</button></td>
       </tr>
@@ -179,7 +179,14 @@ function renderLatestExpenses(budgets) {
     .off('click')
     .on('click', function () {
       const id = $(this).data('id');
-      deleteExpense(id);
-      refreshDashboard();
+      showConfirmModal({
+        title: 'Delete expense?',
+        message: 'This expense will be permanently removed.',
+        confirmText: 'Delete expense',
+        onConfirm: () => {
+          deleteExpense(id);
+          refreshDashboard();
+        },
+      });
     });
 }

@@ -16,7 +16,7 @@ function normalizeBudgets(budgets) {
     icon: budget.icon || '💳',
     expenses: (budget.expenses || []).map((expense) => ({
       id: expense.id || `e-${Date.now()}`,
-      name: expense.name || 'Expense',
+      name: expense.name ?? '',
       amount: Number(expense.amount) || 0,
       date: expense.date || new Date().toISOString().slice(0, 10),
     })),
@@ -105,7 +105,7 @@ function addExpense(budgetId, expense) {
 
   const newExpense = {
     id: expense.id || `e-${Date.now()}`,
-    name: expense.name,
+    name: expense.name ?? '',
     amount: Number(expense.amount),
     date: expense.date || new Date().toISOString().slice(0, 10),
   };

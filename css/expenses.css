@@ -56,3 +56,24 @@
   background: #ffe3e3;
   transform: translateY(-1px);
 }
+
+#expenseForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#expenseForm .input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#expenseForm .input-group input,
+#expenseForm .input-group select {
+  width: 100%;
+}
+
+#expenseForm .button {
+  width: 100%;
+}

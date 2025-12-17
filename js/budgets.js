@@ -71,7 +71,7 @@ function bindEvents() {
     const name = $('#expenseName').val().trim();
     const amount = $('#expenseAmount').val();
     const date = $('#expenseDate').val();
-    if (!budgetId || !name || !amount || !date) return;
+    if (!budgetId || !amount || !date) return;
 
     addExpense(budgetId, { name, amount, date });
     $('#expenseForm')[0].reset();
@@ -89,7 +89,7 @@ function bindEvents() {
     const name = $('#inlineExpenseName').val().trim();
     const amount = $('#inlineExpenseAmount').val();
     const date = $('#inlineExpenseDate').val();
-    if (!name || !amount || !date) return;
+    if (!amount || !date) return;
     addExpense(selectedBudgetId, { name, amount, date });
     $('#inlineExpenseForm')[0].reset();
     $('#inlineExpenseDate').val(new Date().toISOString().slice(0, 10));
@@ -259,8 +259,8 @@ function renderBudgetDetail(budget) {
     budget.expenses.forEach((expense) => {
       rows.append(`
         <tr>
-          <td>${expense.name}</td>
           <td>${formatCurrency(expense.amount)}</td>
+          <td>${expense.name}</td>
           <td>${formatDate(expense.date)}</td>
           <td><button class="delete-expense" data-id="${expense.id}">Delete</button></td>
         </tr>

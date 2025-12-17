@@ -70,8 +70,8 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th>Name</th>
                     <th>Amount</th>
+                    <th>Note</th>
                     <th>Date</th>
                     <th></th>
                   </tr>
@@ -87,18 +87,18 @@
           <h3 style="margin-top:0;">Add Expense</h3>
           <form id="inlineExpenseForm">
             <div class="input-group">
-              <label for="inlineExpenseName">Expense name</label>
-              <input type="text" id="inlineExpenseName" required placeholder="e.g. Bedroom Decor">
+              <label for="inlineExpenseName">Note</label>
+              <input type="text" id="inlineExpenseName">
             </div>
             <div class="input-group">
               <label for="inlineExpenseAmount">Amount</label>
-              <input type="number" id="inlineExpenseAmount" min="0" step="1" required placeholder="e.g. 120">
+              <input type="number" id="inlineExpenseAmount" min="0" step="500" value="0" required>
             </div>
             <div class="input-group">
               <label for="inlineExpenseDate">Date</label>
               <input type="date" id="inlineExpenseDate" required>
             </div>
-            <button type="submit" class="button">Add New Expense</button>
+            <button type="submit" class="button">Add</button>
           </form>
         </div>
       </div>
@@ -145,18 +145,18 @@
               <select id="expenseBudget" required></select>
             </div>
             <div class="input-group">
-              <label for="expenseName">Expense name</label>
-              <input type="text" id="expenseName" required placeholder="Groceries, Fuel...">
+              <label for="expenseName">Note</label>
+              <input type="text" id="expenseName">
             </div>
             <div class="input-group">
               <label for="expenseAmount">Amount</label>
-              <input type="number" id="expenseAmount" min="0" step="1" required>
+              <input type="number" id="expenseAmount" min="0" step="500" value="0" required>
             </div>
             <div class="input-group">
               <label for="expenseDate">Date</label>
               <input type="date" id="expenseDate" required>
             </div>
-            <button type="submit" class="button">Add Expense</button>
+            <button type="submit" class="button">Add</button>
           </form>
         </div>
       </div>

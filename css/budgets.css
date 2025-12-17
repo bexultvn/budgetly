@@ -163,6 +163,19 @@
   gap: 12px;
 }
 
+.budget-detail-title .icon-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  font-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dfe4ff;
+  background: #f3f5fb;
+  color: #111827;
+}
+
 .budget-detail-actions {
   display: flex;
   gap: 10px;
@@ -195,14 +208,25 @@
 
 .budget-form-card form {
   margin-top: 10px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 12px;
-  align-items: end;
+  align-items: stretch;
 }
 
 .budget-form-card form .button {
-  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.budget-form-card .input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.budget-form-card .input-group input,
+.budget-form-card .input-group select {
+  width: 100%;
 }
 
 .budget-meta span {

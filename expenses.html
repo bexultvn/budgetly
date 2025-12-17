@@ -37,9 +37,9 @@
         <table class="table" id="expenseTable">
           <thead>
             <tr>
-              <th>Expense</th>
               <th>Budget</th>
               <th>Amount</th>
+              <th>Note</th>
               <th>Date</th>
               <th></th>
             </tr>
@@ -61,18 +61,18 @@
               <select id="expenseBudget" required></select>
             </div>
             <div class="input-group">
-              <label for="expenseName">Expense name</label>
-              <input type="text" id="expenseName" required placeholder="Subscription, Restaurant, ...">
+              <label for="expenseName">Note</label>
+              <input type="text" id="expenseName">
             </div>
             <div class="input-group">
               <label for="expenseAmount">Amount</label>
-              <input type="number" id="expenseAmount" min="0" step="1" required>
+              <input type="number" id="expenseAmount" min="0" step="500" value="0" required>
             </div>
             <div class="input-group">
               <label for="expenseDate">Date</label>
               <input type="date" id="expenseDate" required>
             </div>
-            <button type="submit" class="button">Save Expense</button>
+            <button type="submit" class="button">Add</button>
           </form>
         </div>
       </div>

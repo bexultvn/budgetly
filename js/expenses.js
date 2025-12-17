@@ -34,7 +34,7 @@ function bindExpenseEvents() {
     const name = $('#expenseName').val().trim();
     const amount = $('#expenseAmount').val();
     const date = $('#expenseDate').val();
-    if (!budgetId || !name || !amount || !date) return;
+    if (!budgetId || !amount || !date) return;
 
     addExpense(budgetId, { name, amount, date });
     $('#expenseForm')[0].reset();
@@ -98,9 +98,9 @@ function renderExpenseTable() {
   expenses.forEach((exp) => {
     const row = $(`
       <tr>
-        <td>${exp.name}</td>
         <td><span class="budget">${exp.icon || '💳'} ${exp.budgetTitle}</span></td>
         <td class="amount">${formatCurrency(exp.amount)}</td>
+        <td>${exp.name}</td>
         <td class="date">${formatDate(exp.date)}</td>
         <td style="text-align:right;">
           <button class="delete-expense" data-id="${exp.id}">Delete</button>
