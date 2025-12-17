@@ -36,13 +36,13 @@
 
 .budget-card:hover {
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
-  border-color: #dfe4ff;
+  border-color: #c9f1ea;
   transform: translateY(-2px);
 }
 
 .budget-card.selected {
-  border: 1px solid #dfe4ff;
-  box-shadow: 0 12px 32px rgba(37, 99, 235, 0.16);
+  border: 1px solid #c9f1ea;
+  box-shadow: 0 12px 32px rgba(11, 179, 156, 0.16);
 }
 
 .budget-card-head {
@@ -86,11 +86,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #dfe4ff;
+  border: 1px solid #c9f1ea;
 }
 
 .budget-card .icon-circle {
-  background: #f3f5fb;
+  background: #eefbf8;
   color: #111827;
 }
 
@@ -125,12 +125,12 @@
 }
 
 .icon-circle.primary {
-  background: #eef2ff;
+  background: #e6fffb;
   color: var(--primary);
 }
 
 .card.expanded {
-  border: 1px solid #dfe4ff;
+  border: 1px solid #c9f1ea;
 }
 
 .empty-list {
@@ -171,8 +171,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #dfe4ff;
-  background: #f3f5fb;
+  border: 1px solid #c9f1ea;
+  background: #eefbf8;
   color: #111827;
 }
 
@@ -239,7 +239,7 @@
 }
 
 .budget-card .progress span {
-  background: linear-gradient(120deg, #2563eb, #3b82f6);
+  background: linear-gradient(120deg, #0bb39c, #14c77d);
 }
 
 .create-budget-card {
@@ -253,8 +253,8 @@
 }
 
 .create-budget-card:hover {
-  border-color: #a5b4fc;
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.12);
+  border-color: #8fe6d7;
+  box-shadow: 0 12px 28px rgba(11, 179, 156, 0.12);
   transform: translateY(-1px);
 }
 

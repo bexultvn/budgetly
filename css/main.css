@@ -1,14 +1,14 @@
 :root {
-  --bg-gradient: radial-gradient(circle at 12% 20%, rgba(37, 99, 235, 0.08), transparent 28%),
-    radial-gradient(circle at 82% 12%, rgba(56, 189, 248, 0.08), transparent 32%),
-    #f4f7ff;
+  --bg-gradient: radial-gradient(circle at 12% 20%, rgba(11, 179, 156, 0.16), transparent 28%),
+    radial-gradient(circle at 82% 12%, rgba(14, 165, 233, 0.12), transparent 32%),
+    #f1fbf9;
   --surface: #ffffff;
-  --muted-surface: #f2f4fb;
+  --muted-surface: #f2f7f6;
   --text: #0f172a;
   --muted: #6b7280;
   --border: #e5e7eb;
-  --primary: #2563eb;
-  --primary-strong: #1d4ed8;
+  --primary: #0bb39c;
+  --primary-strong: #0a8f84;
   --success: #22c55e;
   --warning: #f59e0b;
   --danger: #ef4444;
@@ -92,14 +92,14 @@ a {
 }
 
 .nav-link:hover {
-  background: #f4f3ff;
-  color: #4c1d95;
+  background: #e6fffb;
+  color: var(--primary-strong);
 }
 
 .nav-link.active {
-  background: #7c3aed;
+  background: var(--primary);
   color: #fff;
-  box-shadow: 0 14px 24px rgba(124, 58, 237, 0.28);
+  box-shadow: 0 14px 24px rgba(11, 179, 156, 0.28);
 }
 
 .nav-icon {
@@ -129,8 +129,8 @@ a {
   width: 78px;
   height: 78px;
   border-radius: 50%;
-  background: #e8edff;
-  color: #4f46e5;
+  background: linear-gradient(135deg, #0bb39c, #0ea5e9);
+  color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -164,7 +164,7 @@ a {
 }
 
 .logout-btn:hover {
-  background: #eef2ff;
+  background: #e6fffb;
   color: var(--primary);
   transform: translateY(-1px);
 }
@@ -224,13 +224,13 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #eef2ff;
+  background: #e6fffb;
   color: var(--primary);
   padding: 6px 12px;
   border-radius: 999px;
   font-weight: 700;
   font-size: 12px;
-  border: 1px solid #dfe4ff;
+  border: 1px solid #c9f1ea;
 }
 
 .grid {
@@ -252,14 +252,14 @@ a {
 
 .button {
   border: 1px solid transparent;
-  background: linear-gradient(120deg, #2563eb, #3b82f6);
+  background: linear-gradient(120deg, #0bb39c, #14c77d);
   color: #fff;
   padding: 12px 16px;
   border-radius: 12px;
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
-  box-shadow: 0 12px 32px rgba(37, 99, 235, 0.22);
+  box-shadow: 0 12px 32px rgba(11, 179, 156, 0.22);
 }
 
 .button.secondary {
@@ -322,7 +322,7 @@ input:focus,
 select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.22);
+  box-shadow: 0 0 0 3px rgba(11, 179, 156, 0.22);
   background: #fff;
 }
 
@@ -339,7 +339,7 @@ select:focus {
   display: block;
   height: 100%;
   width: 0;
-  background: linear-gradient(120deg, #2563eb, #3b82f6);
+  background: linear-gradient(120deg, #0bb39c, #14c77d);
   border-radius: 999px;
   transition: width 0.5s ease;
 }
@@ -377,14 +377,14 @@ select:focus {
 }
 
 .table tbody tr:hover {
-  background: #f8faff;
+  background: #f2fffc;
 }
 
 .badge {
   display: inline-flex;
   padding: 6px 10px;
   border-radius: 10px;
-  background: rgba(37, 99, 235, 0.12);
+  background: rgba(11, 179, 156, 0.12);
   color: var(--primary);
   font-weight: 700;
   font-size: 12px;
@@ -459,11 +459,11 @@ select:focus {
   display: inline-flex;
   padding: 8px 12px;
   border-radius: 999px;
-  background: #eef2ff;
+  background: #e6fffb;
   color: var(--primary);
   font-weight: 700;
   font-size: 12px;
-  border: 1px solid #dfe4ff;
+  border: 1px solid #c9f1ea;
 }
 
 .menu-toggle {
