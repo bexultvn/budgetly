@@ -98,12 +98,19 @@ function renderExpenseTable() {
   expenses.forEach((exp) => {
     const row = $(`
       <tr>
-        <td><span class="budget">${exp.icon || '💳'} ${exp.budgetTitle}</span></td>
-        <td class="amount">${formatCurrency(exp.amount)}</td>
-        <td>${exp.name}</td>
-        <td class="date">${formatDate(exp.date)}</td>
-        <td style="text-align:right;">
-          <button class="delete-expense" data-id="${exp.id}">Delete</button>
+        <td data-label="Budget"><span class="budget">${exp.icon || '💳'} ${exp.budgetTitle}</span></td>
+        <td class="amount" data-label="Amount">${formatCurrency(exp.amount)}</td>
+        <td data-label="Note">${exp.name}</td>
+        <td class="date" data-label="Date">${formatDate(exp.date)}</td>
+        <td data-label="" style="text-align:right;">
+          <button class="delete-expense" data-id="${exp.id}" aria-label="Delete expense" title="Delete">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 6h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M8 6v-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M10 11v6M14 11v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
         </td>
       </tr>
     `);

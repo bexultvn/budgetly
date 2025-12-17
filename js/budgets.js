@@ -262,7 +262,16 @@ function renderBudgetDetail(budget) {
           <td>${formatCurrency(expense.amount)}</td>
           <td>${expense.name}</td>
           <td>${formatDate(expense.date)}</td>
-          <td><button class="delete-expense" data-id="${expense.id}">Delete</button></td>
+          <td>
+            <button class="delete-expense" data-id="${expense.id}" aria-label="Delete expense" title="Delete">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 6h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 6v-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M10 11v6M14 11v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </td>
         </tr>
       `);
     });

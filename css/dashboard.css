@@ -317,17 +317,28 @@
 }
 
 .delete-expense {
-  border: 1px solid #fcdada;
-  background: #fff5f5;
-  color: #c81e1e;
-  padding: 8px 12px;
+  border: 1px solid #ef4444;
+  background: #ef4444;
+  color: #fff;
+  width: 34px;
+  height: 34px;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.18s ease, transform 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);
+}
+
+.delete-expense svg {
+  width: 16px;
+  height: 16px;
 }
 
 .delete-expense:hover {
-  background: #ffe3e3;
+  background: #dc2626;
+  border-color: #dc2626;
   transform: translateY(-1px);
 }
 
