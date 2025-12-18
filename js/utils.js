@@ -97,6 +97,9 @@ function renderSidebar(activePage = '') {
   if (!$sidebar.length) return;
 
   $sidebar.html(`
+    <div class="sidebar-mobile-header">
+      <button class="sidebar-close" type="button" aria-label="Close menu">←</button>
+    </div>
     <div class="sidebar-profile">
       <div class="user-avatar">B</div>
       <div class="user-name">User</div>
@@ -158,6 +161,7 @@ function toggleSidebar() {
 
 function initSidebarToggle() {
   $('.menu-toggle').on('click', toggleSidebar);
+   $('.sidebar-close').on('click', () => $('body').removeClass('sidebar-open'));
   $('.sidebar .nav-link').on('click', () => $('body').removeClass('sidebar-open'));
 }
 

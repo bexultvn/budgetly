@@ -10,6 +10,10 @@
   background: transparent;
 }
 
+#backToBudgets {
+  background: #ffffff;
+}
+
 .hidden {
   display: none !important;
 }
@@ -198,6 +202,63 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
+}
+
+@media (max-width: 480px) {
+  .detail-expenses .table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    display: block;
+    border: none;
+    background: transparent;
+  }
+
+  .detail-expenses thead {
+    display: none;
+  }
+
+  .detail-expenses tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 2px 2px 6px;
+  }
+
+  .detail-expenses tr {
+    display: block;
+    padding: 12px 14px;
+    border: none;
+    border-radius: 16px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .detail-expenses td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border: none;
+  }
+
+  .detail-expenses td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #6b7280;
+    margin-right: 12px;
+  }
+
+  .detail-expenses td:last-child {
+    justify-content: flex-end;
+    padding-top: 10px;
+  }
+
+  .detail-expenses td:last-child::before {
+    content: '';
+    margin: 0;
+  }
 }
 
 .table-shell {

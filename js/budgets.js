@@ -259,10 +259,10 @@ function renderBudgetDetail(budget) {
     budget.expenses.forEach((expense) => {
       rows.append(`
         <tr>
-          <td>${formatCurrency(expense.amount)}</td>
-          <td>${expense.name}</td>
-          <td>${formatDate(expense.date)}</td>
-          <td>
+          <td data-label="Amount">${formatCurrency(expense.amount)}</td>
+          <td data-label="Note">${expense.name}</td>
+          <td data-label="Date">${formatDate(expense.date)}</td>
+          <td data-label="Delete">
             <button class="delete-expense" data-id="${expense.id}" aria-label="Delete expense" title="Delete">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M3 6h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>

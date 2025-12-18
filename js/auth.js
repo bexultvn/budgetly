@@ -69,11 +69,11 @@ $(function () {
         return;
       }
       if (data.user.email !== email) {
-        showMessage('error', 'Email does not match the registered account.');
+        showMessage('error', 'Incorrect password or email.');
         return;
       }
       if (data.user.pin && data.user.pin !== pin) {
-        showMessage('error', 'Incorrect passcode.');
+        showMessage('error', 'Incorrect password or email.');
         return;
       }
       data.isLoggedIn = true;

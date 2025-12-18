@@ -101,11 +101,11 @@ function renderLatestExpenses(budgets) {
   recent.forEach((expense) => {
     const row = $(`
       <tr>
-        <td><span class="budget">${expense.icon || '💳'} ${expense.budgetTitle || ''}</span></td>
-        <td class="amount">${formatCurrency(expense.amount)}</td>
-        <td>${expense.name}</td>
-        <td class="date">${formatDate(expense.date)}</td>
-        <td style="text-align:right;">
+        <td data-label="Budget"><span class="budget">${expense.icon || '💳'} ${expense.budgetTitle || ''}</span></td>
+        <td class="amount" data-label="Amount">${formatCurrency(expense.amount)}</td>
+        <td data-label="Note">${expense.name}</td>
+        <td class="date" data-label="Date">${formatDate(expense.date)}</td>
+        <td style="text-align:right;" data-label="Delete">
           <button class="delete-expense" data-id="${expense.id}" aria-label="Delete expense" title="Delete">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M3 6h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>

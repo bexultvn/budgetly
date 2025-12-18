@@ -22,6 +22,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  overflow: visible; /* allow donut to breathe on narrow widths */
 }
 
 .overview-card {
@@ -41,8 +42,8 @@
 }
 
 .donut {
-  width: 220px;
-  height: 220px;
+  width: clamp(180px, 38vw, 220px);
+  height: clamp(180px, 38vw, 220px);
   border-radius: 50%;
   background: conic-gradient(var(--donut-remaining) 0 var(--remain-percent, 0%), var(--donut-expense) var(--remain-percent, 0%) 100%);
   position: relative;
@@ -348,6 +349,61 @@
     grid-template-areas:
       'activity'
       'overview';
+  }
+}
+
+@media (max-width: 480px) {
+  .activity-card .table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    display: block;
+  }
+
+  .activity-card thead {
+    display: none;
+  }
+
+  .activity-card tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0 4px;
+  }
+
+  .activity-card tr {
+    display: block;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .activity-card td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border: none;
+  }
+
+  .activity-card td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #6b7280;
+    margin-right: 12px;
+  }
+
+  .activity-card td:last-child {
+    justify-content: flex-end;
+    padding-top: 10px;
+  }
+
+  .activity-card td:last-child::before {
+    content: '';
+    margin: 0;
   }
 }
 
