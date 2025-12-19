@@ -5,6 +5,7 @@ $(function () {
   renderUserBadge(data.user);
   setActiveNav('expenses');
   initSidebarToggle();
+  initModalDismiss();
   initProfileModal();
   bindExpenseEvents();
   refreshExpenses();
@@ -17,17 +18,6 @@ function bindExpenseEvents() {
   });
 
   $('#openExpenseModal').on('click', () => openExpenseModal());
-
-  $('.close-modal').on('click', function () {
-    const target = $(this).data('close');
-    closeModal(target);
-  });
-
-  $('.modal').on('click', function (e) {
-    if ($(e.target).hasClass('modal')) {
-      closeModal(`#${$(this).attr('id')}`);
-    }
-  });
 
   $('#expenseForm').on('submit', function (e) {
     e.preventDefault();
@@ -54,7 +44,7 @@ function refreshExpenses() {
   const budgets = data.budgets || [];
   renderUserBadge(data.user);
   renderFilterOptions(budgets);
-  renderExpenseSelect(budgets);
+  populateBudgetSelect(budgets);
   renderExpenseTable();
 }
 
@@ -67,19 +57,6 @@ function renderFilterOptions(budgets) {
     $filter.append(`<option value="${budget.id}">${budget.icon} ${budget.title}</option>`);
   });
   $filter.val(current);
-}
-
-function renderExpenseSelect(budgets) {
-  const $select = $('#expenseBudget');
-  $select.empty();
-  if (!budgets.length) {
-    $select.append('<option value="">No budgets available</option>');
-    return;
-  }
-  budgets.forEach((budget) => {
-    $select.append(`<option value="${budget.id}">${budget.icon} ${budget.title}</option>`);
-  });
-  $('#expenseDate').val(new Date().toISOString().slice(0, 10));
 }
 
 function renderExpenseTable() {
@@ -145,20 +122,12 @@ function openExpenseModal(budgetId) {
     alert('Please create a budget first.');
     return;
   }
-  renderExpenseSelect(budgets);
+  populateBudgetSelect(budgets);
   if (budgetId) {
     $('#expenseBudget').val(budgetId);
   }
   $('#expenseDate').val(new Date().toISOString().slice(0, 10));
   openModal('#expenseModal');
-}
-
-function openModal(selector) {
-  $(selector).addClass('active');
-}
-
-function closeModal(selector) {
-  $(selector).removeClass('active');
 }
 
 function normalizeDateInput(value) {

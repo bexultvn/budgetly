@@ -10,6 +10,7 @@ $(function () {
   renderUserBadge(data.user);
   setActiveNav('budgets');
   initSidebarToggle();
+  initModalDismiss();
   initProfileModal();
   initEmojiPicker();
   bindEvents();
@@ -20,22 +21,6 @@ function bindEvents() {
   $('#logoutBtn').on('click', () => {
     logoutUser();
     window.location.href = 'index.html';
-  });
-
-  $('#openBudgetModal').on('click', () => {
-    resetBudgetForm();
-    openModal('#budgetModal');
-  });
-
-  $('.close-modal').on('click', function () {
-    const target = $(this).data('close');
-    closeModal(target);
-  });
-
-  $('.modal').on('click', function (e) {
-    if ($(e.target).hasClass('modal')) {
-      closeModal(`#${$(this).attr('id')}`);
-    }
   });
 
   $('#budgetForm').on('submit', function (e) {
@@ -132,23 +117,10 @@ function refreshBudgets() {
     selectedBudgetId = null;
   }
   renderUserBadge(data.user);
-  renderBudgetOptions(budgets);
+  populateBudgetSelect(budgets);
   renderBudgetCards(budgets);
   renderBudgetDetail(budgets.find((b) => b.id === selectedBudgetId));
   toggleBudgetStates(budgets.length);
-}
-
-function renderBudgetOptions(budgets) {
-  const $select = $('#expenseBudget');
-  $select.empty();
-  if (!budgets.length) {
-    $select.append('<option value="">No budgets available</option>');
-    return;
-  }
-  budgets.forEach((budget) => {
-    $select.append(`<option value="${budget.id}">${budget.icon} ${budget.title}</option>`);
-  });
-  $('#expenseDate').val(new Date().toISOString().slice(0, 10));
 }
 
 function renderBudgetCards(budgets) {
@@ -215,7 +187,6 @@ function renderBudgetCards(budgets) {
     renderBudgetCards(budgets);
     renderBudgetDetail(budgets.find((b) => b.id === selectedBudgetId));
     $('#budgetList').addClass('hidden');
-    $('#budgetActions').addClass('hidden');
     $('#backToBudgets').removeClass('hidden');
     $('#budgetDetailShell').removeClass('hidden');
     $('html, body').animate(
@@ -232,7 +203,6 @@ function renderBudgetDetail(budget) {
     $('#budgetDetailShell').addClass('hidden');
     $('#backToBudgets').addClass('hidden');
     $('#budgetList').removeClass('hidden');
-    $('#budgetActions').removeClass('hidden');
     return;
   }
 
@@ -300,7 +270,6 @@ function toggleBudgetStates(count) {
   if (!count) {
     $('#budgetDetailShell').addClass('hidden');
     $('#budgetList').removeClass('hidden');
-    $('#budgetActions').removeClass('hidden');
     $('#emptyBudgetsState').addClass('hidden');
   } else {
     $('#emptyBudgetsState').addClass('hidden');
@@ -313,7 +282,6 @@ function toggleBudgetStates(count) {
 $('#backToBudgets').on('click', () => {
   selectedBudgetId = null;
   $('#budgetList').removeClass('hidden');
-  $('#budgetActions').removeClass('hidden');
   $('#backToBudgets').addClass('hidden');
   $('#budgetDetailShell').addClass('hidden');
 });
@@ -376,26 +344,13 @@ function initEmojiPicker() {
   });
 }
 
-function openModal(selector) {
-  if (selector === '#budgetModal') {
-    $('#emojiPicker').addClass('hidden');
-    $('#emojiTrigger').attr('aria-expanded', 'false');
-  }
-  $(selector).addClass('active');
-}
-
-function closeModal(selector) {
-  $(selector).removeClass('active');
-}
-
 function openExpenseModal(budgetId) {
   const budgets = getData().budgets || [];
-  renderBudgetOptions(budgets);
+  populateBudgetSelect(budgets);
   const chosen = budgetId || selectedBudgetId;
   if (chosen) {
     $('#expenseBudget').val(chosen);
   }
-  $('#expenseDate').val(new Date().toISOString().slice(0, 10));
   if (!budgets.length) {
     alert('Please create a budget first.');
     return;

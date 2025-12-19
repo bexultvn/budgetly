@@ -3,6 +3,7 @@ $(function () {
   renderSidebar('dashboard');
   setActiveNav('dashboard');
   initSidebarToggle();
+  initModalDismiss();
   initProfileModal();
   refreshDashboard();
 
@@ -44,7 +45,6 @@ function refreshDashboard() {
   $('#totalExpenses').text(formatCurrency(totals.totalExpenses));
   const remaining = Math.max(totals.totalBudget - totals.totalExpenses, 0);
   $('#remainingStat').text(formatCurrency(remaining));
-  $('#expenseCount').text(totals.expenseCount);
 
   renderOverview(totals, remaining);
   renderRiskAndTop(data.budgets);
@@ -116,45 +116,6 @@ function renderRiskAndTop(budgets) {
     $('#topSpendTitle').text('No spending yet');
     $('#topSpendMeta').text('No expenses logged for this month');
   }
-}
-
-function renderLatestBudgets(budgets) {
-  const list = $('#latestBudgets');
-  list.empty();
-  const latest = getLatestBudgets(budgets, 4);
-  if (!latest.length) {
-    list.append('<div class="empty-state empty-tall">No Budgets</div>');
-    return;
-  }
-
-  latest.forEach((budget) => {
-    const stats = getBudgetStats(budget);
-    const percent = Math.round(stats.percent) || 0;
-    const progressClass = percent > 90 ? 'danger' : percent > 70 ? 'warning' : '';
-    const item = $(`
-      <div class="latest-budget-card">
-        <div class="lb-head">
-          <div class="icon-circle primary">${budget.icon}</div>
-          <div class="lb-meta">
-            <strong>${budget.title}</strong>
-            <div class="muted">${(budget.expenses || []).length} Item${(budget.expenses || []).length === 1 ? '' : 's'}</div>
-          </div>
-          <div class="lb-amount">${formatCurrency(budget.limit)}</div>
-        </div>
-        <div class="progress ${progressClass}">
-          <span style="width:0%"></span>
-        </div>
-        <div class="lb-footer">
-          <span class="muted">${formatCurrency(stats.spent)} Spend</span>
-          <span class="muted">${formatCurrency(stats.remaining)} Remaining</span>
-        </div>
-      </div>
-    `);
-    list.append(item);
-    setTimeout(() => {
-      item.find('.progress span').css('width', `${percent}%`);
-    }, 40);
-  });
 }
 
 function renderLatestExpenses(budgets) {

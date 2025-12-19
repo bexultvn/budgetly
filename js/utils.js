@@ -107,6 +107,55 @@ function setActiveNav(page) {
   $(`.nav-link[data-page="${page}"]`).addClass('active');
 }
 
+function openModal(selector) {
+  if (selector === '#budgetModal') {
+    $('#emojiPicker').addClass('hidden');
+    $('#emojiTrigger').attr('aria-expanded', 'false');
+  }
+  $(selector).addClass('active');
+}
+
+function closeModal(selector) {
+  $(selector).removeClass('active');
+}
+
+function initModalDismiss() {
+  $(document)
+    .off('click.modalClose')
+    .on('click.modalClose', '.close-modal', function (e) {
+      e.preventDefault();
+      const target = $(this).data('close');
+      if (target) {
+        closeModal(target);
+      }
+    });
+
+  $(document)
+    .off('click.modalOverlay')
+    .on('click.modalOverlay', '.modal', function (e) {
+      if ($(e.target).hasClass('modal')) {
+        closeModal(`#${$(this).attr('id')}`);
+      }
+    });
+}
+
+function populateBudgetSelect(budgets = []) {
+  const $select = $('#expenseBudget');
+  if (!$select.length) return;
+
+  $select.empty();
+  if (!budgets.length) {
+    $select.append('<option value="">No budgets available</option>');
+    return;
+  }
+
+  budgets.forEach((budget) => {
+    $select.append(`<option value="${budget.id}">${budget.icon} ${budget.title}</option>`);
+  });
+
+  $('#expenseDate').val(new Date().toISOString().slice(0, 10));
+}
+
 function renderSidebar(activePage = '') {
   const $sidebar = $('.sidebar');
   if (!$sidebar.length) return;
