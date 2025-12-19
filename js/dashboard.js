@@ -12,6 +12,21 @@ $(function () {
   });
 });
 
+function getCurrentMonthKey() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+}
+
+function filterExpensesByMonth(expenses) {
+  const target = getCurrentMonthKey();
+  return (expenses || []).filter((exp) => {
+    const d = new Date(exp.date);
+    if (Number.isNaN(d.getTime())) return false;
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    return key === target;
+  });
+}
+
 function refreshDashboard() {
   const data = getData();
   renderUserBadge(data.user);
@@ -32,6 +47,7 @@ function refreshDashboard() {
   $('#expenseCount').text(totals.expenseCount);
 
   renderOverview(totals, remaining);
+  renderRiskAndTop(data.budgets);
   renderLatestExpenses(data.budgets);
 }
 
@@ -48,6 +64,43 @@ function renderOverview(totals, remainingOverride) {
     `Remaining budget ${formatCurrency(remaining)}, total expenses ${formatCurrency(totals.totalExpenses)}.`,
   );
   $('#overviewRemaining').text(formatCurrency(remaining));
+}
+
+function renderRiskAndTop(budgets) {
+  const monthExpensesByBudget = (budgets || []).map((budget) => {
+    const monthlyExpenses = filterExpensesByMonth(budget.expenses);
+    const spent = monthlyExpenses.reduce((sum, exp) => sum + Number(exp.amount || 0), 0);
+    return {
+      budget,
+      spent,
+      limit: Number(budget.limit) || 0,
+      usage: budget.limit ? (spent / Number(budget.limit)) * 100 : 0,
+    };
+  });
+
+  const risky = monthExpensesByBudget
+    .filter((b) => b.usage >= 80 && b.limit > 0)
+    .sort((a, b) => b.usage - a.usage)[0];
+
+  if (risky) {
+    $('#atRiskTitle').text(`${risky.budget.icon || '⚠️'} ${risky.budget.title}`);
+    $('#atRiskMeta').text(`${Math.round(risky.usage)}% used`);
+  } else {
+    $('#atRiskTitle').text('None at risk');
+    $('#atRiskMeta').text('All under 80%');
+  }
+
+  const topSpending = monthExpensesByBudget
+    .filter((b) => b.spent > 0)
+    .sort((a, b) => b.spent - a.spent)[0];
+
+  if (topSpending) {
+    $('#topSpendTitle').text(`${topSpending.budget.icon || '💸'} ${topSpending.budget.title}`);
+    $('#topSpendMeta').text(`${formatCurrency(topSpending.spent)} / ${formatCurrency(topSpending.limit)}`);
+  } else {
+    $('#topSpendTitle').text('No spending yet');
+    $('#topSpendMeta').text('No expenses logged for this month');
+  }
 }
 
 function renderLatestBudgets(budgets) {

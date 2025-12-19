@@ -290,6 +290,7 @@ function initProfileModal() {
   let pendingAvatar = null;
   let messageTimer = null;
   let passwordMessageTimer = null;
+  let profileWasOpenForPassword = false;
 
   const setMessage = (type, text) => {
     $message.removeClass('hidden success error').addClass(type).text(text);
@@ -353,10 +354,18 @@ function initProfileModal() {
   const closePasswordModal = () => {
     $passwordModal.removeClass('active');
     resetPasswordModal();
+    if (profileWasOpenForPassword) {
+      $modal.addClass('active');
+    }
+    profileWasOpenForPassword = false;
   };
 
   const openPasswordModal = () => {
     resetPasswordModal();
+    profileWasOpenForPassword = $modal.hasClass('active');
+    if (profileWasOpenForPassword) {
+      $modal.removeClass('active');
+    }
     $passwordModal.addClass('active');
   };
 

@@ -5,8 +5,114 @@
   margin-bottom: 18px;
 }
 
+.insight-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.2fr) minmax(220px, 0.8fr);
+  grid-auto-rows: auto;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.overview-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: visible;
+  --donut-remaining: #0bb39c;
+  --donut-expense: #ef4444;
+}
+
+.insight-grid .overview-card {
+  grid-row: span 2;
+}
+
+.overview-head h3 {
+  margin: 0;
+}
+
+.donut-shell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+}
+
+.donut {
+  width: clamp(180px, 38vw, 220px);
+  height: clamp(180px, 38vw, 220px);
+  border-radius: 50%;
+  background: conic-gradient(var(--donut-remaining) 0 var(--remain-percent, 0%), var(--donut-expense) var(--remain-percent, 0%) 100%);
+  position: relative;
+}
+
+.donut::after {
+  content: '';
+  position: absolute;
+  inset: 24px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e6fffb;
+}
+
+.donut-center {
+  position: absolute;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 1;
+}
+
+.donut-center strong {
+  font-size: 26px;
+  color: #111827;
+}
+
+.donut-legend {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.donut-legend .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.donut-legend .dot.remaining {
+  background: #0bb39c;
+}
+
+.donut-legend .dot.spent {
+  background: #ef4444;
+}
+
 .activity-grid {
   display: block;
+}
+
+@media (max-width: 760px) {
+  .insight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .insight-grid .overview-card {
+    grid-row: auto;
+  }
+
+  .donut-shell {
+    min-height: 200px;
+  }
+
+  .donut {
+    width: min(220px, 70vw);
+    height: min(220px, 70vw);
+  }
 }
 
 
@@ -16,6 +122,10 @@
   align-items: center;
   gap: 10px;
   padding: 14px 16px;
+}
+
+.stat-card.compact {
+  padding: 12px 14px;
 }
 
 .stat-icon {
@@ -29,6 +139,21 @@
   color: #fff;
   flex-shrink: 0;
   box-shadow: 0 10px 24px rgba(11, 179, 156, 0.18);
+}
+
+.stat-icon.warning {
+  background: #f59e0b;
+  box-shadow: 0 10px 24px rgba(245, 158, 11, 0.18);
+}
+
+.stat-icon.danger {
+  background: #ef4444;
+  box-shadow: 0 10px 24px rgba(239, 68, 68, 0.18);
+}
+
+.stat-icon.info {
+  background: #0ea5e9;
+  box-shadow: 0 10px 24px rgba(14, 165, 233, 0.18);
 }
 
 .stat-card .label {

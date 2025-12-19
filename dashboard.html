@@ -72,6 +72,41 @@
         </div>
       </div>
 
+      <div class="insight-grid">
+        <div class="card overview-card">
+          <div class="overview-head">
+            <h3>Overall Budget</h3>
+          </div>
+          <div class="donut-shell">
+            <div class="donut" id="overviewDonut" role="img" aria-label="Remaining budget and total expenses"></div>
+            <div class="donut-center">
+              <span class="muted">Remaining</span>
+              <strong id="overviewRemaining">$0</strong>
+            </div>
+          </div>
+          <div class="donut-legend">
+            <span><i class="dot remaining"></i> Remaining</span>
+            <span><i class="dot spent"></i> Expenses</span>
+          </div>
+        </div>
+        <div class="card stat-card compact">
+          <div>
+            <span class="label">Budget at risk</span>
+            <div class="stat-value" id="atRiskTitle">None at risk</div>
+            <div class="muted" id="atRiskMeta">All under 80%</div>
+          </div>
+          <div class="stat-icon warning">⚠️</div>
+        </div>
+        <div class="card stat-card compact">
+          <div>
+            <span class="label">Top spending</span>
+            <div class="stat-value" id="topSpendTitle">No spending yet</div>
+            <div class="muted" id="topSpendMeta">No expenses logged for this month</div>
+          </div>
+          <div class="stat-icon danger">💸</div>
+        </div>
+      </div>
+
       <div class="activity-grid">
         <div class="card activity-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
@@ -148,7 +183,7 @@
         <div class="modal-card profile-card">
           <div class="modal-header">
             <h3>Change Password</h3>
-            <button class="close-modal" data-close="#changePasswordModal">✕</button>
+            <button class="close-modal" data-close="#changePasswordModal">←</button>
           </div>
           <div class="profile-fields">
             <div class="field">
