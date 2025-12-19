@@ -1,4 +1,10 @@
-const STORAGE_KEY = 'financeData';
+const STORAGE_KEY_PREFIX = 'financeData:';
+const SESSION_KEY = 'financeSession';
+const LEGACY_STORAGE_KEY = 'financeData';
+
+function getStorageKey(email) {
+  return `${STORAGE_KEY_PREFIX}${email}`;
+}
 
 function createDefaultData() {
   return {
@@ -6,6 +12,45 @@ function createDefaultData() {
     budgets: [],
     isLoggedIn: false,
   };
+}
+
+function getSessionEmail() {
+  const raw = localStorage.getItem(SESSION_KEY);
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    return (parsed.email || '').toLowerCase() || null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function setSessionEmail(email) {
+  if (!email) {
+    localStorage.removeItem(SESSION_KEY);
+    return;
+  }
+  localStorage.setItem(SESSION_KEY, JSON.stringify({ email: email.toLowerCase() }));
+}
+
+function migrateLegacyData() {
+  const raw = localStorage.getItem(LEGACY_STORAGE_KEY);
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    const legacyEmail = (parsed.user?.email || 'legacy').toLowerCase();
+    const key = getStorageKey(legacyEmail);
+    localStorage.setItem(key, JSON.stringify(parsed));
+    setSessionEmail(legacyEmail);
+    localStorage.removeItem(LEGACY_STORAGE_KEY);
+    return parsed;
+  } catch (e) {
+    return null;
+  }
+}
+
+function resolveTargetEmail(email) {
+  return (email || getSessionEmail() || '').toLowerCase();
 }
 
 function normalizeBudgets(budgets) {
@@ -23,11 +68,20 @@ function normalizeBudgets(budgets) {
   }));
 }
 
-function getData() {
-  const raw = localStorage.getItem(STORAGE_KEY);
+function getData(email, options = {}) {
+  const { createIfMissing = true } = options;
+  const targetEmail = resolveTargetEmail(email);
+
+  if (!targetEmail) {
+    const legacy = migrateLegacyData();
+    return legacy ? { ...legacy, budgets: normalizeBudgets(legacy.budgets) } : createDefaultData();
+  }
+
+  const raw = localStorage.getItem(getStorageKey(targetEmail));
   if (!raw) {
+    if (!createIfMissing) return createDefaultData();
     const base = createDefaultData();
-    saveData(base);
+    saveData(base, targetEmail);
     return base;
   }
 
@@ -39,36 +93,55 @@ function getData() {
       isLoggedIn: !!parsed.isLoggedIn,
     };
   } catch (e) {
+    if (!createIfMissing) return createDefaultData();
     const base = createDefaultData();
-    saveData(base);
+    saveData(base, targetEmail);
     return base;
   }
 }
 
-function saveData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+function saveData(data, email) {
+  const targetEmail = resolveTargetEmail(email);
+  if (!targetEmail) return;
+  localStorage.setItem(getStorageKey(targetEmail), JSON.stringify(data));
 }
 
-function setUser(user) {
-  const data = getData();
+function setUser(user, email) {
+  const targetEmail = resolveTargetEmail(email);
+  if (!targetEmail) return;
+  const data = getData(targetEmail);
   data.user = user;
-  saveData(data);
+  saveData(data, targetEmail);
 }
 
-function setLoginState(isLoggedIn) {
-  const data = getData();
+function setLoginState(isLoggedIn, email) {
+  const targetEmail = resolveTargetEmail(email);
+  if (!targetEmail) return;
+  const data = getData(targetEmail);
   data.isLoggedIn = !!isLoggedIn;
-  saveData(data);
+  saveData(data, targetEmail);
+  if (isLoggedIn) {
+    setSessionEmail(targetEmail);
+  } else {
+    setSessionEmail(null);
+  }
 }
 
 function logoutUser() {
-  const data = getData();
-  data.isLoggedIn = false;
-  saveData(data);
+  const targetEmail = getSessionEmail();
+  if (!targetEmail) return;
+  const data = getData(targetEmail, { createIfMissing: false });
+  if (data && data.user) {
+    data.isLoggedIn = false;
+    saveData(data, targetEmail);
+  }
+  setSessionEmail(null);
 }
 
 function addBudget(budget) {
-  const data = getData();
+  const targetEmail = getSessionEmail();
+  if (!targetEmail) return null;
+  const data = getData(targetEmail);
   const newBudget = {
     id: budget.id || `b-${Date.now()}`,
     title: budget.title,
@@ -77,29 +150,35 @@ function addBudget(budget) {
     expenses: budget.expenses || [],
   };
   data.budgets.push(newBudget);
-  saveData(data);
+  saveData(data, targetEmail);
   return newBudget;
 }
 
 function deleteBudget(budgetId) {
-  const data = getData();
+  const targetEmail = getSessionEmail();
+  if (!targetEmail) return;
+  const data = getData(targetEmail);
   data.budgets = data.budgets.filter((b) => b.id !== budgetId);
-  saveData(data);
+  saveData(data, targetEmail);
 }
 
 function updateBudget(budgetId, updates) {
-  const data = getData();
+  const targetEmail = getSessionEmail();
+  if (!targetEmail) return null;
+  const data = getData(targetEmail);
   const target = data.budgets.find((b) => b.id === budgetId);
   if (!target) return null;
   target.title = updates.title ?? target.title;
   target.limit = updates.limit !== undefined ? Number(updates.limit) : target.limit;
   target.icon = updates.icon ?? target.icon;
-  saveData(data);
+  saveData(data, targetEmail);
   return target;
 }
 
 function addExpense(budgetId, expense) {
-  const data = getData();
+  const targetEmail = getSessionEmail();
+  if (!targetEmail) return null;
+  const data = getData(targetEmail);
   const target = data.budgets.find((b) => b.id === budgetId);
   if (!target) return null;
 
@@ -112,17 +191,19 @@ function addExpense(budgetId, expense) {
 
   target.expenses = target.expenses || [];
   target.expenses.unshift(newExpense);
-  saveData(data);
+  saveData(data, targetEmail);
   return newExpense;
 }
 
 function deleteExpense(expenseId) {
-  const data = getData();
+  const targetEmail = getSessionEmail();
+  if (!targetEmail) return;
+  const data = getData(targetEmail);
   data.budgets = data.budgets.map((budget) => ({
     ...budget,
     expenses: (budget.expenses || []).filter((expense) => expense.id !== expenseId),
   }));
-  saveData(data);
+  saveData(data, targetEmail);
 }
 
 function getAllExpenses() {
@@ -144,11 +225,12 @@ function getAllExpenses() {
 }
 
 function seedDemoData() {
-  const existing = getData();
+  const demoEmail = 'demo@budgetly.app';
+  const existing = getData(demoEmail, { createIfMissing: false });
   if (existing.user || (existing.budgets && existing.budgets.length)) return existing;
 
   const demo = {
-    user: { name: 'Casey Morgan', email: 'casey@budgetly.app' },
+    user: { name: 'Casey Morgan', email: demoEmail },
     isLoggedIn: false,
     budgets: [
       {
@@ -180,6 +262,6 @@ function seedDemoData() {
     ],
   };
 
-  saveData(demo);
+  saveData(demo, demoEmail);
   return demo;
 }

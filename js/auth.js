@@ -50,34 +50,41 @@ $(function () {
       return;
     }
 
-    const data = getData();
-
     if (mode === 'register') {
       if (!name) {
         showMessage('error', 'Please enter your name to personalize your dashboard.');
         return;
       }
+      const existing = getData(email, { createIfMissing: false });
+      if (existing.user && existing.user.email === email) {
+        showMessage('error', 'An account with this email already exists. Please login instead.');
+        return;
+      }
+      const newData = createDefaultData();
       const user = { name, email, pin };
-      data.user = user;
-      data.isLoggedIn = true;
-      saveData(data);
+      newData.user = user;
+      newData.isLoggedIn = true;
+      saveData(newData, email);
+      setSessionEmail(email);
       showMessage('success', 'Account created. Redirecting...');
       setTimeout(() => (window.location.href = 'dashboard.html'), 500);
     } else {
-      if (!data.user) {
+      const account = getData(email, { createIfMissing: false });
+      if (!account.user) {
         showMessage('error', 'No account yet. Switch to Register to create one.');
         return;
       }
-      if (data.user.email !== email) {
+      if (account.user.email !== email) {
         showMessage('error', 'Incorrect password or email.');
         return;
       }
-      if (data.user.pin && data.user.pin !== pin) {
+      if (account.user.pin && account.user.pin !== pin) {
         showMessage('error', 'Incorrect password or email.');
         return;
       }
-      data.isLoggedIn = true;
-      saveData(data);
+      account.isLoggedIn = true;
+      saveData(account, email);
+      setSessionEmail(email);
       showMessage('success', 'Welcome back! Redirecting...');
       setTimeout(() => (window.location.href = 'dashboard.html'), 350);
     }

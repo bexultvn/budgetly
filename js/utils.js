@@ -69,7 +69,16 @@ function getLatestExpenses(budgets, count = 5) {
 }
 
 function requireAuth() {
-  const data = getData();
+  let email = getSessionEmail();
+  if (!email) {
+    migrateLegacyData();
+    email = getSessionEmail();
+  }
+  if (!email) {
+    window.location.href = 'index.html';
+    return createDefaultData();
+  }
+  const data = getData(email);
   if (!data.isLoggedIn) {
     window.location.href = 'index.html';
   }
@@ -77,7 +86,13 @@ function requireAuth() {
 }
 
 function redirectIfLoggedIn() {
-  const data = getData();
+  let email = getSessionEmail();
+  if (!email) {
+    migrateLegacyData();
+    email = getSessionEmail();
+  }
+  if (!email) return;
+  const data = getData(email, { createIfMissing: false });
   if (data.isLoggedIn) {
     window.location.href = 'dashboard.html';
   }
