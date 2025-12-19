@@ -125,7 +125,9 @@
 }
 
 .stat-card.compact {
-  padding: 12px 14px;
+  padding: 14px 18px;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .stat-icon {
@@ -161,6 +163,23 @@
   font-weight: 700;
   letter-spacing: 0.02em;
   font-size: 13px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.stat-card.compact > div:first-child {
+  flex: 1;
+}
+
+@media (min-width: 1200px) {
+  .stat-card.compact {
+    padding: 16px 24px;
+  }
+
+  .stat-icon {
+    width: 72px;
+    height: 72px;
+  }
 }
 
 .bar-chart {
