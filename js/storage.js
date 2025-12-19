@@ -255,12 +255,42 @@ function deleteExpense(expenseId) {
   saveData(data, targetEmail);
 }
 
-function getAllExpenses() {
+function getAllExpenses(options = {}) {
+  const {
+    budgetId = null,
+    month = null,
+    startDate = null,
+    endDate = null,
+    query = '',
+  } = options;
+
   const data = getData();
   const expenses = [];
+  const normalizedQuery = (query || '').toLowerCase().trim();
+  const start = startDate ? new Date(startDate) : null;
+  const end = endDate ? new Date(endDate) : null;
 
   data.budgets.forEach((budget) => {
+    if (budgetId && budget.id !== budgetId) return;
     (budget.expenses || []).forEach((expense) => {
+      // Month filter
+      if (month && !isDateInMonth(expense.date, month)) return;
+
+      // Range filter (inclusive)
+      if (start || end) {
+        const d = new Date(expense.date);
+        if (Number.isNaN(d.getTime())) return;
+        if (start && d < start) return;
+        if (end) {
+          const endOfDay = new Date(end);
+          endOfDay.setHours(23, 59, 59, 999);
+          if (d > endOfDay) return;
+        }
+      }
+
+      // Text search
+      if (normalizedQuery && !(expense.name || '').toLowerCase().includes(normalizedQuery)) return;
+
       expenses.push({
         ...expense,
         budgetId: budget.id,

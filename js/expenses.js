@@ -45,6 +45,8 @@ function bindExpenseEvents() {
   });
 
   $('#filterBudget').on('change', refreshExpenses);
+
+  $('#customStart, #customEnd').on('change input', refreshExpenses);
 }
 
 function refreshExpenses() {
@@ -82,9 +84,14 @@ function renderExpenseSelect(budgets) {
 
 function renderExpenseTable() {
   const filter = $('#filterBudget').val() || 'all';
-  const expenses = getAllExpenses()
-    .filter((exp) => (filter === 'all' ? true : exp.budgetId === filter))
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  const startIso = normalizeDateInput($('#customStart').val());
+  const endIso = normalizeDateInput($('#customEnd').val());
+  const bounds = getRangeBounds({ start: startIso, end: endIso });
+  const expenses = getAllExpenses({
+    budgetId: filter === 'all' ? null : filter,
+    startDate: bounds?.start || null,
+    endDate: bounds?.end || null,
+  }).sort((a, b) => new Date(b.date) - new Date(a.date));
 
   const $tbody = $('#expenseTable tbody');
   const $empty = $('#emptyExpenses');
@@ -152,4 +159,19 @@ function openModal(selector) {
 
 function closeModal(selector) {
   $(selector).removeClass('active');
+}
+
+function normalizeDateInput(value) {
+  if (!value) return null;
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed.toISOString().slice(0, 10);
+}
+
+function getRangeBounds(custom = {}) {
+  if (!custom.start && !custom.end) return null;
+  return {
+    start: custom.start || null,
+    end: custom.end || null,
+  };
 }
