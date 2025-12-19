@@ -5,6 +5,7 @@ $(function () {
   renderUserBadge(data.user);
   setActiveNav('expenses');
   initSidebarToggle();
+  initProfileModal();
   bindExpenseEvents();
   refreshExpenses();
 });

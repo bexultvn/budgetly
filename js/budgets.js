@@ -10,6 +10,7 @@ $(function () {
   renderUserBadge(data.user);
   setActiveNav('budgets');
   initSidebarToggle();
+  initProfileModal();
   initEmojiPicker();
   bindEvents();
   refreshBudgets();

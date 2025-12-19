@@ -127,6 +127,55 @@ function setLoginState(isLoggedIn, email) {
   }
 }
 
+function updateProfile(updates) {
+  const sessionEmail = getSessionEmail();
+  if (!sessionEmail) return { ok: false, error: 'You must be logged in to update your profile.' };
+
+  const data = getData(sessionEmail);
+  if (!data.user) return { ok: false, error: 'No profile found to update.' };
+
+  const changingPin = !!updates.newPin;
+  if (changingPin && data.user.pin) {
+    if (!updates.currentPin) return { ok: false, error: 'Please enter your current password to change it.' };
+    if (updates.currentPin !== data.user.pin) return { ok: false, error: 'Incorrect current password.' };
+  }
+
+  const next = { ...data, user: { ...data.user } };
+
+  if (updates.firstName !== undefined) next.user.firstName = updates.firstName.trim();
+  if (updates.lastName !== undefined) next.user.lastName = updates.lastName.trim();
+  if (updates.username !== undefined) next.user.username = updates.username.trim();
+  if (updates.name !== undefined) next.user.name = updates.name.trim();
+  if (updates.avatar !== undefined) next.user.avatar = updates.avatar;
+
+  let targetEmail = sessionEmail;
+  if (updates.email && updates.email.toLowerCase() !== sessionEmail) {
+    const nextEmail = updates.email.toLowerCase();
+    const existing = localStorage.getItem(getStorageKey(nextEmail));
+    if (existing) {
+      return { ok: false, error: 'An account with that email already exists.' };
+    }
+    targetEmail = nextEmail;
+    next.user.email = nextEmail;
+  }
+
+  if (updates.newPin) {
+    next.user.pin = updates.newPin;
+  }
+
+  const derivedName = (next.user.name || `${next.user.firstName || ''} ${next.user.lastName || ''}`).trim();
+  next.user.name = derivedName || next.user.username || next.user.email;
+
+  saveData(next, targetEmail);
+
+  if (targetEmail !== sessionEmail) {
+    localStorage.removeItem(getStorageKey(sessionEmail));
+    setSessionEmail(targetEmail);
+  }
+
+  return { ok: true, data: next };
+}
+
 function logoutUser() {
   const targetEmail = getSessionEmail();
   if (!targetEmail) return;

@@ -122,6 +122,53 @@
           </div>
         </div>
       </div>
+
+      <div class="modal" id="profileModal">
+        <div class="modal-card profile-card">
+          <div class="modal-header">
+            <h3>Personal Info</h3>
+            <button class="close-modal" data-close="#profileModal">✕</button>
+          </div>
+          <div class="profile-hero">
+            <div class="avatar-preview large" id="profileAvatarPreview">AB</div>
+            <div class="profile-hero-meta">
+              <div class="profile-hero-name" id="profileHeroName">User</div>
+              <div class="profile-hero-email" id="profileHeroEmail">email</div>
+              <label class="button ghost small avatar-upload">
+                <input type="file" id="profileAvatarInput" accept="image/*" hidden>
+                Change avatar
+              </label>
+            </div>
+          </div>
+          <div class="profile-fields">
+            <div class="field">
+              <label>Full Name</label>
+              <input type="text" id="profileName" disabled>
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input type="email" id="profileEmail" disabled>
+            </div>
+            <div class="field">
+              <label>Current Password</label>
+              <input type="password" id="profileCurrentPin" placeholder="Required to save changes" disabled>
+            </div>
+            <div class="field">
+              <label>New Password</label>
+              <input type="password" id="profileNewPin" placeholder="Optional" disabled>
+            </div>
+          </div>
+          <div id="profileMessage" class="message-bar hidden"></div>
+          <div class="modal-actions profile-actions">
+            <div class="form-note muted">Enter your current password only when changing it.</div>
+            <div class="profile-actions-buttons">
+              <button class="button ghost" type="button" id="profileCancelBtn">Close</button>
+              <button class="button secondary" type="button" id="profileEditBtn">Edit profile</button>
+              <button class="button" type="button" id="profileSaveBtn">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 

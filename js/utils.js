@@ -116,8 +116,11 @@ function renderSidebar(activePage = '') {
       <button class="sidebar-close" type="button" aria-label="Close menu">←</button>
     </div>
     <div class="sidebar-profile">
-      <div class="user-avatar">B</div>
+      <button class="user-avatar-btn" type="button" aria-label="Edit profile">
+        <div class="user-avatar">B</div>
+      </button>
       <div class="user-name">User</div>
+      <div class="user-email"></div>
     </div>
     <div class="nav nav-main">
       <a class="nav-link" data-page="dashboard" href="dashboard.html">
@@ -182,15 +185,29 @@ function initSidebarToggle() {
 
 function renderUserBadge(user) {
   if (!user) return;
-  const initials = (user.name || '?')
+  const displayName =
+    (user.name || `${user.firstName || ''} ${user.lastName || ''}`).trim() ||
+    user.username ||
+    user.email ||
+    'User';
+  const initials = displayName
     .split(' ')
+    .filter(Boolean)
     .map((part) => part[0])
     .join('')
     .slice(0, 2)
     .toUpperCase();
-  $('.user-name').text(user.name);
+  $('.user-name').text(displayName);
   $('.user-email').text(user.email || '');
-  $('.user-avatar').text(initials);
+  const $avatar = $('.user-avatar');
+  if (user.avatar) {
+    $avatar
+      .addClass('has-photo')
+      .css('background-image', `url(${user.avatar})`)
+      .text('');
+  } else {
+    $avatar.removeClass('has-photo').css('background-image', 'none').text(initials);
+  }
 }
 
 function showConfirmModal(options) {
@@ -237,4 +254,187 @@ function showConfirmModal(options) {
   });
 
   $modal.addClass('active');
+}
+
+function initProfileModal() {
+  const $modal = $('#profileModal');
+  if (!$modal.length) return;
+
+  let $avatarTriggers = $('.user-avatar-btn');
+  if (!$avatarTriggers.length) {
+    $avatarTriggers = $('.user-avatar');
+  }
+  const $closeButtons = $('.close-modal[data-close="#profileModal"]');
+  const $overlay = $modal;
+  const $editBtn = $('#profileEditBtn');
+  const $saveBtn = $('#profileSaveBtn');
+  const $cancelBtn = $('#profileCancelBtn');
+  const $heroName = $('#profileHeroName');
+  const $heroEmail = $('#profileHeroEmail');
+  const $message = $('#profileMessage');
+  const $avatarPreview = $('#profileAvatarPreview');
+  const $avatarInput = $('#profileAvatarInput');
+  const $fullName = $('#profileName');
+  const $email = $('#profileEmail');
+  const $currentPin = $('#profileCurrentPin');
+  const $newPin = $('#profileNewPin');
+
+  let pendingAvatar = null;
+  let editing = false;
+
+  const setMessage = (type, text) => {
+    $message.removeClass('hidden success error').addClass(type).text(text);
+  };
+
+  const clearMessage = () => $message.addClass('hidden').text('');
+
+  const initialsFromName = (name, fallback) => {
+    const source =
+      (name || '')
+        .split(' ')
+        .filter(Boolean)
+        .join(' ')
+        .trim() ||
+      fallback ||
+      '?';
+    return source
+      .split(' ')
+      .filter(Boolean)
+      .map((part) => part[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase();
+  };
+
+  const setAvatarPreview = (src, name, fallback) => {
+    if (!src) {
+      $avatarPreview.removeClass('has-photo').css('background-image', 'none').text(initialsFromName(name, fallback));
+      return;
+    }
+    $avatarPreview.addClass('has-photo').css('background-image', `url(${src})`).text('');
+  };
+
+  const toggleEditing = (enabled) => {
+    editing = enabled;
+    $fullName.prop('disabled', !enabled);
+    $email.prop('disabled', !enabled);
+    $newPin.prop('disabled', !enabled);
+    $avatarInput.prop('disabled', !enabled);
+    $currentPin.prop('disabled', !enabled);
+    $editBtn.toggleClass('hidden', enabled);
+    $saveBtn.toggleClass('hidden', !enabled);
+  };
+
+  const close = () => {
+    $modal.removeClass('active');
+    pendingAvatar = null;
+    editing = false;
+  };
+
+  const open = () => {
+    const data = getData();
+    const user = data.user || {};
+    pendingAvatar = null;
+    toggleEditing(false);
+    clearMessage();
+    $fullName.val(user.name || '');
+    $email.val(user.email || '');
+    $heroName.text(
+      (user.name || '').trim() || user.username || user.email || 'User',
+    );
+    $heroEmail.text(user.email || '');
+    $currentPin.val('');
+    $newPin.val('');
+    const displayName = user.name || user.username || '';
+    setAvatarPreview(user.avatar, displayName, user.email);
+    $modal.addClass('active');
+  };
+
+  $avatarTriggers.off('click.profile').on('click.profile', (e) => {
+    e.preventDefault();
+    open();
+  });
+
+  $closeButtons.off('click.profile').on('click.profile', (e) => {
+    e.preventDefault();
+    close();
+  });
+
+  $overlay.off('click.profile').on('click.profile', (e) => {
+    if ($(e.target).hasClass('modal')) {
+      close();
+    }
+  });
+
+  $editBtn.off('click.profile').on('click.profile', () => {
+    clearMessage();
+    toggleEditing(true);
+  });
+
+  $cancelBtn.off('click.profile').on('click.profile', () => {
+    close();
+  });
+
+  $avatarInput.off('change.profile').on('change.profile', function () {
+    const file = this.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      pendingAvatar = ev.target?.result || null;
+      setAvatarPreview(pendingAvatar, $fullName.val(), $email.val());
+    };
+    reader.readAsDataURL(file);
+  });
+
+  $saveBtn.off('click.profile').on('click.profile', () => {
+    clearMessage();
+    const nameVal = ($fullName.val() || '').trim();
+    const emailVal = ($email.val() || '').trim().toLowerCase();
+    const currentPinVal = ($currentPin.val() || '').trim();
+    const newPinVal = ($newPin.val() || '').trim();
+
+    if (!nameVal || !emailVal) {
+      setMessage('error', 'Full name and email are required.');
+      return;
+    }
+
+    if (newPinVal && newPinVal.length < 4) {
+      setMessage('error', 'Password must be at least 4 characters.');
+      return;
+    }
+    if (newPinVal && !currentPinVal) {
+      setMessage('error', 'Enter your current password to change it.');
+      return;
+    }
+
+    const payload = {
+      name: nameVal,
+      email: emailVal,
+      currentPin: currentPinVal,
+    };
+
+    if (pendingAvatar !== null) {
+      payload.avatar = pendingAvatar;
+    }
+    if (newPinVal) {
+      payload.newPin = newPinVal;
+    }
+
+    const result = updateProfile(payload);
+    if (!result.ok) {
+      setMessage('error', result.error || 'Failed to update profile.');
+      return;
+    }
+
+    renderUserBadge(result.data.user);
+    const displayName = result.data.user.name || result.data.user.username || '';
+    setAvatarPreview(result.data.user.avatar, displayName, result.data.user.email);
+    $heroName.text(displayName || result.data.user.email || 'User');
+    $heroEmail.text(result.data.user.email || '');
+    $currentPin.val('');
+    $newPin.val('');
+    pendingAvatar = null;
+    toggleEditing(false);
+    setMessage('success', 'Profile updated.');
+  });
 }

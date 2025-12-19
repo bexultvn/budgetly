@@ -3,6 +3,7 @@ $(function () {
   renderSidebar('dashboard');
   setActiveNav('dashboard');
   initSidebarToggle();
+  initProfileModal();
   refreshDashboard();
 
   $('#logoutBtn').on('click', () => {
