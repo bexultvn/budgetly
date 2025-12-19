@@ -59,8 +59,8 @@
         </div>
         <div class="card stat-card">
           <div>
-            <span class="label">No. of Budgets</span>
-            <div class="stat-value" id="budgetCount">0</div>
+            <span class="label">Remaining</span>
+            <div class="stat-value" id="remainingStat">$0</div>
           </div>
           <div class="stat-icon">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -76,6 +76,7 @@
         <div class="card activity-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <h3>Recent Expenses</h3>
+            <a class="button ghost" href="expenses.html">View all</a>
           </div>
           <table class="table" id="latestExpensesTable">
             <thead>
@@ -90,22 +91,6 @@
             <tbody id="latestExpensesBody"></tbody>
           </table>
           <div class="empty-state hidden" id="latestExpensesEmpty">No expenses</div>
-        </div>
-        <div class="card overview-card">
-          <div class="overview-head">
-            <h3>Financial Overview</h3>
-          </div>
-          <div class="donut-shell">
-            <div class="donut" id="overviewDonut" role="img" aria-label="Remaining budget and total expenses"></div>
-            <div class="donut-center">
-              <span class="muted">Remaining</span>
-              <strong id="overviewRemaining">$0</strong>
-            </div>
-          </div>
-          <div class="donut-legend">
-            <span><i class="dot remaining"></i> Remaining</span>
-            <span><i class="dot spent"></i> Expenses</span>
-          </div>
         </div>
       </div>
 

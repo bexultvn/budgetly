@@ -27,15 +27,18 @@ function refreshDashboard() {
   const totals = calculateTotals(data);
   $('#totalBudget').text(formatCurrency(totals.totalBudget));
   $('#totalExpenses').text(formatCurrency(totals.totalExpenses));
-  $('#budgetCount').text(totals.budgetsCount);
+  const remaining = Math.max(totals.totalBudget - totals.totalExpenses, 0);
+  $('#remainingStat').text(formatCurrency(remaining));
   $('#expenseCount').text(totals.expenseCount);
 
-  renderOverview(totals);
+  renderOverview(totals, remaining);
   renderLatestExpenses(data.budgets);
 }
 
-function renderOverview(totals) {
-  const remaining = Math.max(totals.totalBudget - totals.totalExpenses, 0);
+function renderOverview(totals, remainingOverride) {
+  const remaining = remainingOverride !== undefined
+    ? remainingOverride
+    : Math.max(totals.totalBudget - totals.totalExpenses, 0);
   const total = remaining + totals.totalExpenses;
   const remainingPercent = total ? (remaining / total) * 100 : 0;
   const $donut = $('#overviewDonut');
