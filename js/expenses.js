@@ -103,7 +103,7 @@ function renderExpenseTable() {
         <td class="amount" data-label="Amount">${formatCurrency(exp.amount)}</td>
         <td data-label="Note">${exp.name}</td>
         <td class="date" data-label="Date">${formatDate(exp.date)}</td>
-        <td data-label="" style="text-align:right;">
+        <td data-label="" class="actions-cell">
           <button class="delete-expense" data-id="${exp.id}" aria-label="Delete expense" title="Delete">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M3 6h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>

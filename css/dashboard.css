@@ -129,8 +129,8 @@
 }
 
 .stat-icon {
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: #0bb39c;
   display: inline-flex;
@@ -143,17 +143,17 @@
 
 .stat-icon.warning {
   background: #f59e0b;
-  box-shadow: 0 10px 24px rgba(245, 158, 11, 0.18);
+  box-shadow: 0 14px 28px rgba(245, 158, 11, 0.18);
 }
 
 .stat-icon.danger {
   background: #ef4444;
-  box-shadow: 0 10px 24px rgba(239, 68, 68, 0.18);
+  box-shadow: 0 14px 28px rgba(239, 68, 68, 0.18);
 }
 
 .stat-icon.info {
   background: #0ea5e9;
-  box-shadow: 0 10px 24px rgba(14, 165, 233, 0.18);
+  box-shadow: 0 14px 28px rgba(14, 165, 233, 0.18);
 }
 
 .stat-card .label {
@@ -381,6 +381,10 @@
   transform: translateY(-1px);
 }
 
+.activity-card td.actions-cell {
+  text-align: left;
+}
+
 @media (max-width: 960px) {
   .activity-grid {
     grid-template-columns: 1fr;
@@ -528,4 +532,34 @@
   background: rgba(249, 115, 22, 0.12);
   color: #c2410c;
   border: 1px solid rgba(249, 115, 22, 0.25);
+}
+#atRiskList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.at-risk-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid #fcd34d;
+  border-radius: 12px;
+  background: #fffbeb;
+  font-weight: 700;
+}
+
+.at-risk-item .budget-line {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.at-risk-item .amount {
+  font-weight: 600;
+  color: #92400e;
+  font-size: 13px;
 }

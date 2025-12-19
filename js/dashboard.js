@@ -70,24 +70,39 @@ function renderRiskAndTop(budgets) {
   const monthExpensesByBudget = (budgets || []).map((budget) => {
     const monthlyExpenses = filterExpensesByMonth(budget.expenses);
     const spent = monthlyExpenses.reduce((sum, exp) => sum + Number(exp.amount || 0), 0);
+    const usage = budget.limit ? (spent / Number(budget.limit)) * 100 : 0;
     return {
       budget,
       spent,
       limit: Number(budget.limit) || 0,
-      usage: budget.limit ? (spent / Number(budget.limit)) * 100 : 0,
+      usage,
+      usageDisplay: Math.round(usage * 10) / 10,
     };
   });
 
-  const risky = monthExpensesByBudget
+  const riskyList = monthExpensesByBudget
     .filter((b) => b.usage >= 80 && b.limit > 0)
-    .sort((a, b) => b.usage - a.usage)[0];
+    .sort((a, b) => b.usage - a.usage);
 
-  if (risky) {
-    $('#atRiskTitle').text(`${risky.budget.icon || '⚠️'} ${risky.budget.title}`);
-    $('#atRiskMeta').text(`${Math.round(risky.usage)}% used`);
+  if (riskyList.length) {
+    $('#atRiskTitle').addClass('hidden');
+    $('#atRiskMeta').addClass('hidden');
+    const html = riskyList
+      .map(
+        (item) =>
+          `<div class="at-risk-item">
+            <div class="budget-line">
+              <span class="budget">${item.budget.icon || '⚠️'} ${item.budget.title}</span>
+              <span class="amount">${formatCurrency(item.spent)} / ${formatCurrency(item.limit)}</span>
+            </div>
+          </div>`,
+      )
+      .join('');
+    $('#atRiskList').html(html);
   } else {
-    $('#atRiskTitle').text('None at risk');
-    $('#atRiskMeta').text('All under 80%');
+    $('#atRiskTitle').text('None at risk').removeClass('hidden');
+    $('#atRiskMeta').text('All under 80%').removeClass('hidden');
+    $('#atRiskList').empty();
   }
 
   const topSpending = monthExpensesByBudget
@@ -162,7 +177,7 @@ function renderLatestExpenses(budgets) {
         <td class="amount" data-label="Amount">${formatCurrency(expense.amount)}</td>
         <td data-label="Note">${expense.name}</td>
         <td class="date" data-label="Date">${formatDate(expense.date)}</td>
-        <td style="text-align:right;" data-label="Delete">
+        <td class="actions-cell" data-label="Delete">
           <button class="delete-expense" data-id="${expense.id}" aria-label="Delete expense" title="Delete">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M3 6h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>

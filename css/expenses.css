@@ -68,6 +68,10 @@
   transform: translateY(-1px);
 }
 
+.table td.actions-cell {
+  text-align: left;
+}
+
 @media (max-width: 720px) {
   #expenseTable thead {
     display: none;
