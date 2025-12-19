@@ -130,41 +130,60 @@
             <button class="close-modal" data-close="#profileModal">✕</button>
           </div>
           <div class="profile-hero">
-            <div class="avatar-preview large" id="profileAvatarPreview">AB</div>
+            <button class="avatar-button" type="button" id="profileAvatarButton" aria-label="Change avatar">
+              <div class="avatar-preview large" id="profileAvatarPreview">AB</div>
+            </button>
+            <input type="file" id="profileAvatarInput" accept="image/*" hidden>
             <div class="profile-hero-meta">
               <div class="profile-hero-name" id="profileHeroName">User</div>
               <div class="profile-hero-email" id="profileHeroEmail">email</div>
-              <label class="button ghost small avatar-upload">
-                <input type="file" id="profileAvatarInput" accept="image/*" hidden>
-                Change avatar
-              </label>
             </div>
           </div>
           <div class="profile-fields">
             <div class="field">
               <label>Full Name</label>
-              <input type="text" id="profileName" disabled>
+              <input type="text" id="profileName">
             </div>
             <div class="field">
               <label>Email</label>
-              <input type="email" id="profileEmail" disabled>
-            </div>
-            <div class="field">
-              <label>Current Password</label>
-              <input type="password" id="profileCurrentPin" placeholder="Required to save changes" disabled>
-            </div>
-            <div class="field">
-              <label>New Password</label>
-              <input type="password" id="profileNewPin" placeholder="Optional" disabled>
+              <input type="email" id="profileEmail">
             </div>
           </div>
           <div id="profileMessage" class="message-bar hidden"></div>
           <div class="modal-actions profile-actions">
-            <div class="form-note muted">Enter your current password only when changing it.</div>
             <div class="profile-actions-buttons">
-              <button class="button ghost" type="button" id="profileCancelBtn">Close</button>
-              <button class="button secondary" type="button" id="profileEditBtn">Edit profile</button>
+              <button class="button ghost" type="button" id="profileChangePasswordBtn">Change password</button>
               <button class="button" type="button" id="profileSaveBtn">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal" id="changePasswordModal">
+        <div class="modal-card profile-card">
+          <div class="modal-header">
+            <h3>Change Password</h3>
+            <button class="close-modal" data-close="#changePasswordModal">✕</button>
+          </div>
+          <div class="profile-fields">
+            <div class="field">
+              <label>Current Password</label>
+              <input type="password" id="changePasswordCurrent" placeholder="Current password">
+            </div>
+            <div class="field">
+              <label>New Password</label>
+              <input type="password" id="changePasswordNew" placeholder="New password">
+            </div>
+            <div class="field">
+              <label>Confirm New Password</label>
+              <input type="password" id="changePasswordConfirm" placeholder="Confirm new password">
+            </div>
+          </div>
+          <div id="changePasswordMessage" class="message-bar hidden"></div>
+          <div class="modal-actions profile-actions">
+            <div class="profile-actions-buttons">
+              <button class="button ghost" type="button" id="changePasswordCancelBtn">Cancel</button>
+              <button class="button" type="button" id="changePasswordSaveBtn">Save password</button>
             </div>
           </div>
         </div>

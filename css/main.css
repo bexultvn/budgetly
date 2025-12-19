@@ -428,7 +428,7 @@ select:focus {
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(6, 12, 24, 0.45);
+  background: rgba(15, 23, 42, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -436,6 +436,7 @@ select:focus {
   pointer-events: none;
   transition: opacity 0.25s ease;
   z-index: 40;
+  padding: 40px 16px;
 }
 
 .modal.active {
@@ -448,6 +449,7 @@ select:focus {
   background: #fff;
   border-radius: 16px;
   padding: 22px;
+  margin: 16px 0;
   transform: translateY(10px);
   transition: transform 0.25s ease;
   box-shadow: var(--shadow);
@@ -538,19 +540,19 @@ select:focus {
 }
 
 .profile-card {
-  background: #0b1220;
-  color: #e5e7eb;
-  border: 1px solid #1f2937;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
 }
 
 .profile-card .modal-header h3 {
-  color: #e5e7eb;
+  color: var(--text);
 }
 
 .profile-card .close-modal {
-  background: #111827;
-  border-color: #1f2937;
-  color: #e5e7eb;
+  background: #f1f5f9;
+  border-color: var(--border);
+  color: var(--text);
 }
 
 .profile-hero {
@@ -561,9 +563,9 @@ select:focus {
 }
 
 .avatar-preview {
-  width: 120px;
-  height: 120px;
-  border-radius: 16px;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
   background: linear-gradient(135deg, #0bb39c, #0ea5e9);
   color: #fff;
   display: inline-flex;
@@ -575,19 +577,14 @@ select:focus {
 }
 
 .avatar-preview.large {
-  width: 132px;
-  height: 132px;
+  width: 104px;
+  height: 104px;
 }
 
 .avatar-preview.has-photo {
   background-size: cover;
   background-position: center;
   color: transparent;
-}
-
-.avatar-upload {
-  margin-top: 12px;
-  display: inline-flex;
 }
 
 .profile-hero-name {
@@ -615,14 +612,14 @@ select:focus {
 }
 
 .profile-fields label {
-  color: #d1d5db;
+  color: var(--text);
   font-weight: 700;
 }
 
 .profile-card input {
-  background: #0f172a;
-  border: 1px solid #1f2937;
-  color: #e5e7eb;
+  background: var(--muted-surface);
+  border: 1px solid var(--border);
+  color: var(--text);
   border-radius: 12px;
 }
 
@@ -631,7 +628,7 @@ select:focus {
 }
 
 .profile-card input::placeholder {
-  color: #6b7280;
+  color: var(--muted);
 }
 
 .form-note {
@@ -640,28 +637,28 @@ select:focus {
 }
 
 .profile-card .form-note {
-  color: #9ca3af;
+  color: var(--muted);
 }
 
 .message-bar {
   padding: 10px 12px;
   border-radius: 12px;
   font-weight: 600;
-  background: #0f172a;
-  border: 1px solid #1f2937;
-  color: #e5e7eb;
+  background: var(--muted-surface);
+  border: 1px solid var(--border);
+  color: var(--text);
 }
 
 .message-bar.success {
-  background: #0f2e1a;
-  color: #34d399;
-  border: 1px solid #065f46;
+  background: #ecfdf3;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
 }
 
 .message-bar.error {
-  background: #2f0d0d;
-  color: #fca5a5;
-  border: 1px solid #7f1d1d;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
 }
 
 .profile-actions {
@@ -675,6 +672,35 @@ select:focus {
   display: flex;
   gap: 10px;
   align-items: center;
+}
+
+.avatar-button {
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 999px;
+}
+
+.password-section {
+  grid-column: 1 / -1;
+  padding: 12px;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  background: var(--muted-surface);
+}
+
+.password-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.password-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px 14px;
 }
 
 @media (max-width: 900px) {

@@ -266,27 +266,56 @@ function initProfileModal() {
   }
   const $closeButtons = $('.close-modal[data-close="#profileModal"]');
   const $overlay = $modal;
-  const $editBtn = $('#profileEditBtn');
   const $saveBtn = $('#profileSaveBtn');
-  const $cancelBtn = $('#profileCancelBtn');
   const $heroName = $('#profileHeroName');
   const $heroEmail = $('#profileHeroEmail');
   const $message = $('#profileMessage');
   const $avatarPreview = $('#profileAvatarPreview');
   const $avatarInput = $('#profileAvatarInput');
+  const $avatarButton = $('#profileAvatarButton');
   const $fullName = $('#profileName');
   const $email = $('#profileEmail');
-  const $currentPin = $('#profileCurrentPin');
-  const $newPin = $('#profileNewPin');
+  const $changePasswordBtn = $('#profileChangePasswordBtn');
+
+  const $passwordModal = $('#changePasswordModal');
+  const $passwordCloseButtons = $('.close-modal[data-close="#changePasswordModal"]');
+  const $passwordOverlay = $passwordModal;
+  const $passwordMessage = $('#changePasswordMessage');
+  const $passwordCurrent = $('#changePasswordCurrent');
+  const $passwordNew = $('#changePasswordNew');
+  const $passwordConfirm = $('#changePasswordConfirm');
+  const $passwordCancel = $('#changePasswordCancelBtn');
+  const $passwordSave = $('#changePasswordSaveBtn');
 
   let pendingAvatar = null;
-  let editing = false;
+  let messageTimer = null;
+  let passwordMessageTimer = null;
 
   const setMessage = (type, text) => {
     $message.removeClass('hidden success error').addClass(type).text(text);
+    if (messageTimer) clearTimeout(messageTimer);
+    messageTimer = setTimeout(() => {
+      $message.addClass('hidden').text('');
+    }, 1000);
   };
 
-  const clearMessage = () => $message.addClass('hidden').text('');
+  const clearMessage = () => {
+    if (messageTimer) clearTimeout(messageTimer);
+    $message.addClass('hidden').text('');
+  };
+
+  const setPasswordMessage = (type, text) => {
+    $passwordMessage.removeClass('hidden success error').addClass(type).text(text);
+    if (passwordMessageTimer) clearTimeout(passwordMessageTimer);
+    passwordMessageTimer = setTimeout(() => {
+      $passwordMessage.addClass('hidden').text('');
+    }, 1000);
+  };
+
+  const clearPasswordMessage = () => {
+    if (passwordMessageTimer) clearTimeout(passwordMessageTimer);
+    $passwordMessage.addClass('hidden').text('');
+  };
 
   const initialsFromName = (name, fallback) => {
     const source =
@@ -314,37 +343,43 @@ function initProfileModal() {
     $avatarPreview.addClass('has-photo').css('background-image', `url(${src})`).text('');
   };
 
-  const toggleEditing = (enabled) => {
-    editing = enabled;
-    $fullName.prop('disabled', !enabled);
-    $email.prop('disabled', !enabled);
-    $newPin.prop('disabled', !enabled);
-    $avatarInput.prop('disabled', !enabled);
-    $currentPin.prop('disabled', !enabled);
-    $editBtn.toggleClass('hidden', enabled);
-    $saveBtn.toggleClass('hidden', !enabled);
+  const resetPasswordModal = () => {
+    clearPasswordMessage();
+    $passwordCurrent.val('');
+    $passwordNew.val('');
+    $passwordConfirm.val('');
+  };
+
+  const closePasswordModal = () => {
+    $passwordModal.removeClass('active');
+    resetPasswordModal();
+  };
+
+  const openPasswordModal = () => {
+    resetPasswordModal();
+    $passwordModal.addClass('active');
   };
 
   const close = () => {
     $modal.removeClass('active');
     pendingAvatar = null;
-    editing = false;
+    clearMessage();
   };
 
   const open = () => {
     const data = getData();
     const user = data.user || {};
     pendingAvatar = null;
-    toggleEditing(false);
     clearMessage();
+    $fullName.prop('disabled', false);
+    $email.prop('disabled', false);
+    $avatarInput.prop('disabled', false);
     $fullName.val(user.name || '');
     $email.val(user.email || '');
     $heroName.text(
       (user.name || '').trim() || user.username || user.email || 'User',
     );
     $heroEmail.text(user.email || '');
-    $currentPin.val('');
-    $newPin.val('');
     const displayName = user.name || user.username || '';
     setAvatarPreview(user.avatar, displayName, user.email);
     $modal.addClass('active');
@@ -366,13 +401,15 @@ function initProfileModal() {
     }
   });
 
-  $editBtn.off('click.profile').on('click.profile', () => {
-    clearMessage();
-    toggleEditing(true);
+  $changePasswordBtn.off('click.profile').on('click.profile', () => {
+    openPasswordModal();
   });
 
-  $cancelBtn.off('click.profile').on('click.profile', () => {
-    close();
+  $avatarButton.off('click.profile').on('click.profile', () => {
+    clearMessage();
+    if ($avatarInput.length) {
+      $avatarInput.trigger('click');
+    }
   });
 
   $avatarInput.off('change.profile').on('change.profile', function () {
@@ -390,35 +427,18 @@ function initProfileModal() {
     clearMessage();
     const nameVal = ($fullName.val() || '').trim();
     const emailVal = ($email.val() || '').trim().toLowerCase();
-    const currentPinVal = ($currentPin.val() || '').trim();
-    const newPinVal = ($newPin.val() || '').trim();
 
     if (!nameVal || !emailVal) {
       setMessage('error', 'Full name and email are required.');
       return;
     }
 
-    if (newPinVal && newPinVal.length < 4) {
-      setMessage('error', 'Password must be at least 4 characters.');
-      return;
-    }
-    if (newPinVal && !currentPinVal) {
-      setMessage('error', 'Enter your current password to change it.');
-      return;
-    }
-
     const payload = {
       name: nameVal,
       email: emailVal,
-      currentPin: currentPinVal,
     };
 
-    if (pendingAvatar !== null) {
-      payload.avatar = pendingAvatar;
-    }
-    if (newPinVal) {
-      payload.newPin = newPinVal;
-    }
+    if (pendingAvatar !== null) payload.avatar = pendingAvatar;
 
     const result = updateProfile(payload);
     if (!result.ok) {
@@ -431,10 +451,57 @@ function initProfileModal() {
     setAvatarPreview(result.data.user.avatar, displayName, result.data.user.email);
     $heroName.text(displayName || result.data.user.email || 'User');
     $heroEmail.text(result.data.user.email || '');
-    $currentPin.val('');
-    $newPin.val('');
     pendingAvatar = null;
-    toggleEditing(false);
     setMessage('success', 'Profile updated.');
+  });
+
+  $passwordCloseButtons.off('click.profile').on('click.profile', (e) => {
+    e.preventDefault();
+    closePasswordModal();
+  });
+
+  $passwordCancel.off('click.profile').on('click.profile', (e) => {
+    e.preventDefault();
+    closePasswordModal();
+  });
+
+  $passwordOverlay.off('click.profile').on('click.profile', (e) => {
+    if ($(e.target).hasClass('modal')) {
+      closePasswordModal();
+    }
+  });
+
+  $passwordSave.off('click.profile').on('click.profile', () => {
+    clearPasswordMessage();
+    const currentPin = ($passwordCurrent.val() || '').trim();
+    const newPin = ($passwordNew.val() || '').trim();
+    const confirmPin = ($passwordConfirm.val() || '').trim();
+
+    if (!currentPin || !newPin || !confirmPin) {
+      setPasswordMessage('error', 'Please fill in all password fields.');
+      return;
+    }
+
+    if (newPin !== confirmPin) {
+      setPasswordMessage('error', 'New password and confirmation must match.');
+      return;
+    }
+
+    if (newPin.length < 4) {
+      setPasswordMessage('error', 'Password must be at least 4 characters.');
+      return;
+    }
+
+    const result = updateProfile({ currentPin, newPin });
+    if (!result.ok) {
+      setPasswordMessage('error', result.error || 'Failed to update password.');
+      return;
+    }
+
+    setPasswordMessage('success', 'Password updated.');
+    setTimeout(() => {
+      closePasswordModal();
+      setMessage('success', 'Password updated.');
+    }, 250);
   });
 }
