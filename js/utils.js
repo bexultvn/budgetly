@@ -179,8 +179,17 @@ function toggleSidebar() {
 
 function initSidebarToggle() {
   $('.menu-toggle').on('click', toggleSidebar);
-   $('.sidebar-close').on('click', () => $('body').removeClass('sidebar-open'));
+  $('.sidebar-close').on('click', () => $('body').removeClass('sidebar-open'));
   $('.sidebar .nav-link').on('click', () => $('body').removeClass('sidebar-open'));
+  $(document).on('click', (e) => {
+    if ($('body').hasClass('sidebar-open')) {
+      const $sidebar = $('.sidebar');
+      const $toggle = $('.menu-toggle');
+      if (!$sidebar.is(e.target) && $sidebar.has(e.target).length === 0 && !$toggle.is(e.target) && $toggle.has(e.target).length === 0) {
+        $('body').removeClass('sidebar-open');
+      }
+    }
+  });
 }
 
 function renderUserBadge(user) {
