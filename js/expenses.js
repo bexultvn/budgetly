@@ -7,8 +7,8 @@ $(function () {
   initSidebarToggle();
   initModalDismiss();
   initProfileModal();
-  refreshExpenses();
   bindExpenseEvents();
+  refreshExpenses();
 });
 
 function bindExpenseEvents() {
@@ -70,8 +70,8 @@ function renderExpenseTable() {
     endDate: bounds?.end || null,
   }).sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  const $empty = $('#emptyExpenses');
   const $tbody = $('#expenseTable tbody');
+  const $empty = $('#emptyExpenses');
   $tbody.empty();
 
   if (!expenses.length) {
