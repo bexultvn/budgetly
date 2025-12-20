@@ -264,8 +264,8 @@ function getAllExpenses(options = {}) {
     query = '',
   } = options;
 
-  const data = getData();
   const expenses = [];
+  const data = getData();
   const normalizedQuery = (query || '').toLowerCase().trim();
   const start = startDate ? new Date(startDate) : null;
   const end = endDate ? new Date(endDate) : null;
