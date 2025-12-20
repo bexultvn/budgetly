@@ -434,8 +434,8 @@ function initProfileModal() {
   };
 
   const open = () => {
-    const user = data.user || {};
     const data = getData();
+    const user = data.user || {};
     pendingAvatar = null;
     clearMessage();
     $fullName.prop('disabled', false);
